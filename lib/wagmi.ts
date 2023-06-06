@@ -1,11 +1,10 @@
 import { getDefaultWallets } from "@rainbow-me/rainbowkit";
-import "@rainbow-me/rainbowkit/styles.css";
 import { localhost } from "@wagmi/core/chains";
 import { configureChains, createConfig } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { infuraProvider } from "wagmi/providers/infura";
 import { publicProvider } from "wagmi/providers/public";
-import allContracts from "./contracts.json";
+import localhostContracts from "./contracts/localhost.json";
 
 const config = configureChains(
   [localhost],
@@ -31,7 +30,7 @@ export const wagmiConfig = createConfig({
 });
 
 export const getContractAddresses = () => {
-  let contracts = allContracts.localhost;
+  let contracts = localhostContracts;
   // if (process.env.GCOIN_CHAIN === 'sepolia') {}
   // else if (process.env.GCOIN_CHAIN === 'mainnet') {}
 

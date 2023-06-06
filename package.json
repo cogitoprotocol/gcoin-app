@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "wagmi": "cp ../gcoin/deploy/*.json lib/contracts && wagmi generate",
+    "dev": "npm run wagmi && next dev",
+    "build": "npm run wagmi && next build",
     "start": "next start",
     "lint": "next lint"
   },
