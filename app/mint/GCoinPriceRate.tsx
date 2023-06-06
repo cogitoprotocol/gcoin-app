@@ -8,7 +8,7 @@ export default function GCoinPriceRate() {
   const gcoinValueResult = useGCoinGetGCoinValue({
     watch: true,
   });
-  const inputAddress = getContractAddresses().Usdc;
+  const inputAddress = getContractAddresses().USDTest;
   const inputSymbolResult = useErc20Symbol({
     address: inputAddress,
   });

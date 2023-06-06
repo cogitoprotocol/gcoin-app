@@ -42,7 +42,7 @@ export default function TradeForm() {
   const [inputValue, setInputValue] = useState("");
   const [outputValue, setOutputValue] = useState("");
 
-  const inputAddress = getContractAddresses().Usdc;
+  const inputAddress = getContractAddresses().USDTest;
   const outputAddress = getContractAddresses().GCoin;
   const inputSymbolResult = useErc20Symbol({
     address: inputAddress,
