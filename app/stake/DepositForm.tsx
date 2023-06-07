@@ -2,7 +2,12 @@
 
 import ClickableBalanceLabel from "@/components/common/ClickableBalanceLabel";
 import ClientOnly from "@/components/common/ClientOnly";
-import { GCOIN_DECIMALS } from "@/lib/constants";
+import {
+  GCOIN_DECIMALS,
+  GCOIN_MAX_STAKING_DURATION_DAYS,
+  GCOIN_MIN_STAKING_DURATION_DAYS,
+  SECONDS_IN_DAY,
+} from "@/lib/constants";
 import { getRevertError } from "@/lib/errors";
 import { formatNumber, pluralize, withDecimals } from "@/lib/numbers";
 import { useCgvPrice, useGcoinPrice } from "@/lib/prices";
@@ -32,9 +37,6 @@ enum FormState {
   DISABLED,
 }
 
-const MIN_DURATION = 7; // 7 days
-const MAX_DURATION = 4 * 365; // 4 years
-const SECONDS_IN_DAY = 86400;
 const daysToSeconds = (d: number) => BigInt(d * SECONDS_IN_DAY);
 
 export default function DepositForm() {
@@ -244,8 +246,8 @@ export default function DepositForm() {
           </div>
           <input
             type="range"
-            min={MIN_DURATION}
-            max={MAX_DURATION}
+            min={GCOIN_MIN_STAKING_DURATION_DAYS}
+            max={GCOIN_MAX_STAKING_DURATION_DAYS}
             value={durationDays}
             onChange={(e) => setDurationDays(Number(e.target.value))}
             step={7}
@@ -254,15 +256,16 @@ export default function DepositForm() {
           <div className="-mt-2 flex justify-between opacity-50 text-sm">
             <div
               className="cursor-pointer hover:underline"
-              onClick={() => setDurationDays(MIN_DURATION)}
+              onClick={() => setDurationDays(GCOIN_MIN_STAKING_DURATION_DAYS)}
             >
-              {MIN_DURATION} {pluralize("day", MIN_DURATION)}
+              {GCOIN_MIN_STAKING_DURATION_DAYS}{" "}
+              {pluralize("day", GCOIN_MIN_STAKING_DURATION_DAYS)}
             </div>
             <div
               className="cursor-pointer hover:underline"
-              onClick={() => setDurationDays(MAX_DURATION)}
+              onClick={() => setDurationDays(GCOIN_MAX_STAKING_DURATION_DAYS)}
             >
-              {MAX_DURATION / 365} years
+              {GCOIN_MAX_STAKING_DURATION_DAYS / 365} years
             </div>
           </div>
         </div>
