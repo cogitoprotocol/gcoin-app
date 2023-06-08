@@ -24,6 +24,7 @@ import {
 } from "@rainbow-me/rainbowkit";
 import { readContract, waitForTransaction, writeContract } from "@wagmi/core";
 import classNames from "classnames";
+import { DateTime } from "luxon";
 import Image from "next/image";
 import { FormEventHandler, useEffect, useState } from "react";
 import { CgSpinner } from "react-icons/cg";
@@ -200,6 +201,8 @@ export default function DepositForm() {
     setFormState(FormState.READY);
   };
 
+  const now = DateTime.now();
+
   return (
     <ClientOnly fallback={<DepositFormSkeleton />}>
       <form
@@ -232,17 +235,22 @@ export default function DepositForm() {
           </div>
         </div>
 
-        <div className="w-full flex flex-col gap-4">
-          <div className="flex justify-between text-xl">
-            <label htmlFor="steps-range" className=" text-white">
-              Stake for {durationDays} {pluralize("day", durationDays)}
-            </label>
-            <label className="">
+        <div className="w-full flex flex-col">
+          <div>
+            <span className="font-light">Stake until </span>
+            <span className="font-medium">
+              {now
+                .plus({ days: durationDays })
+                .toLocaleString(DateTime.DATETIME_FULL)}
+            </span>
+          </div>
+          <div className="">
+            <span className="font-light">Expected APY: </span>
+            <span className="font-medium">
               {rewardsRate != null
                 ? `${formatNumber(rewardsRate, { digits: 2 })}%`
-                : null}{" "}
-              APY
-            </label>
+                : null}
+            </span>
           </div>
           <input
             type="range"
@@ -251,9 +259,9 @@ export default function DepositForm() {
             value={durationDays}
             onChange={(e) => setDurationDays(Number(e.target.value))}
             step={7}
-            className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-black opacity-50"
+            className="mt-4 w-full h-2 rounded-lg appearance-none cursor-pointer bg-black opacity-50"
           />
-          <div className="-mt-2 flex justify-between opacity-50 text-sm">
+          <div className="mt-2 flex justify-between opacity-50 text-sm">
             <div
               className="cursor-pointer hover:underline"
               onClick={() => setDurationDays(GCOIN_MIN_STAKING_DURATION_DAYS)}
