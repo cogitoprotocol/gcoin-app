@@ -3,17 +3,13 @@
 import { CGV_DECIMALS } from "@/lib/constants";
 import { formatNumber } from "@/lib/numbers";
 import { getContractAddresses } from "@/lib/wagmi";
-import { useErc20BalanceOf } from "@/lib/wagmiHooks";
-import { Address, useAccount } from "wagmi";
+import { gCoinStakingAddress, useErc20BalanceOf } from "@/lib/wagmiHooks";
 
-export default function CgvBalance() {
-  const userAccount = useAccount();
+export default function TotalAllocatedRewards() {
   const cgvAddress = getContractAddresses().CGV;
   const balance = useErc20BalanceOf({
     address: cgvAddress,
-    args: [userAccount.address as Address],
-    watch: !!userAccount.address,
-    enabled: !!userAccount.address,
+    args: [gCoinStakingAddress],
   });
 
   if (balance.data == null) {

@@ -5,7 +5,7 @@ import { CGV_DECIMALS, GCOIN_DECIMALS } from "@/lib/constants";
 import { formatNumber } from "@/lib/numbers";
 import { useGCoinStakingGetUserStakingInfo } from "@/lib/wagmiHooks";
 import { Address, useAccount } from "wagmi";
-import CgvBalance from "./CgvBalance";
+import UserCgvBalance from "./UserCgvBalance";
 
 export default function UserStake() {
   const userAccount = useAccount();
@@ -41,7 +41,7 @@ export default function UserStake() {
         <div className="flex justify-between">
           <div>Your CGV Balance</div>
           <div>
-            <CgvBalance />
+            <UserCgvBalance />
           </div>
         </div>
       </div>

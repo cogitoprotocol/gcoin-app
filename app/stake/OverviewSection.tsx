@@ -2,7 +2,7 @@ import ClientOnly from "@/components/common/ClientOnly";
 import Section from "@/components/common/Section";
 import TextSkeleton from "@/components/common/TextSkeleton";
 import BaseRewardRate from "./BaseRewardRate";
-import CgvAvailable from "./CgvAvailable";
+import TotalAllocatedRewards from "./TotalAllocatedRewards";
 import TotalPendingRewards from "./TotalPendingRewards";
 import TotalStaked from "./TotalStaked";
 import UserStake from "./UserStake";
@@ -41,7 +41,7 @@ export default function OverviewSection() {
           <div>Total Allocated CGV Rewards</div>
           <div>
             <ClientOnly fallback={<TextSkeleton className="w-28 h-3" />}>
-              <CgvAvailable />
+              <TotalAllocatedRewards />
             </ClientOnly>
           </div>
         </div>
