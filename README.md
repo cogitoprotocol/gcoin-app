@@ -4,13 +4,20 @@ App for interacting with the Cogito Protocol.
 
 ## Setup
 
-Ensure the [gcoin](https://github.com/cogitoprotocol/GCoin) repo exists in the same parent directory.
+Clone the [gcoin](https://github.com/cogitoprotocol/GCoin) repo. By default we assume it exists in the same parent directory.
 
 Install [nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
 
 ```sh
 nvm i --lts
 npm i
+```
+
+## Environment Variables
+
+```sh
+# Specify the path to your gcoin repo if it's not in the same parent directory
+GCOIN_DIR=...
 ```
 
 ## Development
@@ -24,6 +31,12 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
+
+When contracts are modified or deployed, you need to update contract ABIs and addresses:
+
+```bash
+npm run wagmi
+```
 
 ## Build
 
