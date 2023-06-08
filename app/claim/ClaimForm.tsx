@@ -14,7 +14,7 @@ import {
 } from "@rainbow-me/rainbowkit";
 import { waitForTransaction, writeContract } from "@wagmi/core";
 import Image from "next/image";
-import { FormEventHandler, useEffect, useState } from "react";
+import { FormEventHandler, useState } from "react";
 import { useAccount } from "wagmi";
 import usdcSvg from "../img/usdc.svg";
 
@@ -22,12 +22,6 @@ export default function ClaimForm() {
   const userAccount = useAccount();
 
   const [formState, setFormState] = useState(FormState.READY);
-  useEffect(() => {
-    setFormState(
-      userAccount.isDisconnected ? FormState.DISABLED : FormState.READY
-    );
-  }, [userAccount.isDisconnected]);
-
   // User balances
   const balanceResult = useErc20BalanceOf(
     !!userAccount.address

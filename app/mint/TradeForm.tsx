@@ -49,14 +49,12 @@ export default function TradeForm() {
   );
   const outputDenominator = Math.pow(10, GCOIN_DECIMALS);
 
-  const [formState, setFormState] = useState(FormState.DISABLED);
+  const [formState, setFormState] = useState(FormState.READY);
   useEffect(() => {
-    if (userAccount.isDisconnected) {
-      setFormState(FormState.DISABLED);
-    } else {
+    if (userAccount.isConnected) {
       validateInput();
     }
-  }, [userAccount.isDisconnected]);
+  }, [userAccount.isConnected]);
 
   // User balances
   const inputBalanceResult = useErc20BalanceOf(
@@ -131,6 +129,9 @@ export default function TradeForm() {
 
   // Validate form when input is changed
   const validateInput = () => {
+    if (!userAccount.isConnected) {
+      return;
+    }
     if (userAccount.isConnected && !inputValue) {
       setFormState(FormState.DISABLED);
       setOutputValue("");
@@ -282,7 +283,13 @@ export default function TradeForm() {
 
       <SubmitButton
         state={formState}
-        value={needsAllowance ? `Approve ${inputSymbolResult?.data}` : "Swap"}
+        value={
+          gcoinPausedResult.data
+            ? "Minting Paused"
+            : needsAllowance
+            ? `Approve ${inputSymbolResult?.data}`
+            : "Swap"
+        }
         isConnected={userAccount.isConnected}
       />
     </form>

@@ -73,7 +73,7 @@ const CustomizedLabel = (props: any) => {
             x={cx}
             y={cy}
             textAnchor="middle"
-            className="text-2xl fill-white"
+            className="text-2xl fill-black dark:fill-white"
           >
             Total Assets
           </text>
@@ -82,7 +82,7 @@ const CustomizedLabel = (props: any) => {
             y={cy}
             dy={24}
             textAnchor="middle"
-            className="text-md fill-zinc-400"
+            className="text-md fill-zinc-600 dark:fill-zinc-400"
           >
             {formatNumberUSD(sum, 0)}
           </text>

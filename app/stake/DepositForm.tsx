@@ -97,6 +97,9 @@ export default function DepositForm() {
 
   // Validate form when input is changed
   const validateInput = () => {
+    if (!userAccount.isConnected) {
+      return;
+    }
     if (userAccount.isConnected && !inputValue) {
       setFormState(FormState.DISABLED);
       return;
