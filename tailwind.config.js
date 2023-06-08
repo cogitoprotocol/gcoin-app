@@ -8,6 +8,15 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        dark: "#300030",
+        "light-section-dark": "#EAEBEB",
+        "light-section-light": "#F5F5F5",
+        "dark-section-dark": "#480048",
+        "dark-section-light": "#601848",
+        "accent-active": "#FF9233",
+        accent: "#ff7d08",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

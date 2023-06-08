@@ -27,15 +27,15 @@ export default function RootLayout({
           <div
             className={classNames(
               rubik.className,
-              "flex flex-col items-center bg-zinc-100 dark:bg-zinc-950 text-black dark:text-gray-100"
+              "flex flex-col items-center bg-white text-black dark:bg-dark dark:text-gray-100"
             )}
           >
             <main className="flex flex-col min-h-screen w-full sm:max-w-screen-xl sm:p-4 xl:p-8">
               <Nav />
 
-              <section className="flex flex-col items-center p-4 sm:p-8">
+              <div className="flex flex-col items-center p-4 sm:p-8">
                 {children}
-              </section>
+              </div>
             </main>
 
             <Footer />

@@ -28,12 +28,12 @@ const logo = (
 
 export default function Nav() {
   return (
-    <nav className="pt-2 sm:p-4 sm:flex sm:flex-row sm:justify-between sm:gap-8">
-      <div className="hidden sm:flex flex-col sm:flex-row sm:justify-between">
+    <nav className="pt-2 md:p-4 md:flex md:flex-row md:justify-between md:gap-8">
+      <div className="hidden md:flex flex-col md:flex-row md:justify-between">
         <div className="flex-none px-2">{logo}</div>
       </div>
 
-      <ul className="hidden sm:flex items-center dark:bg-zinc-900 sm:dark:bg-transparent p-4 gap-8 dark:text-gray-50">
+      <ul className="hidden md:flex items-center dark:bg-zinc-900 md:dark:bg-transparent p-4 gap-8 dark:text-gray-50">
         {NAV_LINKS.map(({ label, href }) => (
           <li key={href}>
             <ActiveLink href={href}>{label}</ActiveLink>
@@ -41,9 +41,9 @@ export default function Nav() {
         ))}
       </ul>
 
-      <div className="sm:flex sm:gap-4 sm:items-center">
-        <div className="flex justify-between items-center pl-4 pr-16 sm:p-0">
-          <div className="sm:hidden">{logo}</div>
+      <div className="md:flex md:gap-4 md:items-center">
+        <div className="flex justify-between items-center pl-4 pr-16 md:p-0">
+          <div className="md:hidden">{logo}</div>
 
           <ConnectButton />
         </div>

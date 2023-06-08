@@ -9,9 +9,9 @@ import { pluralize } from "@/lib/numbers";
 export default function DepositFormSkeleton() {
   return (
     <div className="w-full flex flex-col items-center gap-4">
-      <div className="w-full rounded-md p-4 flex flex-col gap-2 animate-pulse bg-zinc-900 opacity-30">
+      <div className="w-full rounded-md p-4 flex flex-col gap-2 animate-pulse bg-zinc-500 dark:bg-zinc-900 opacity-30">
         <div className="flex justify-between text-sm">
-          <label className="text-gray-400">Balance</label>
+          <label className="text-gray-600 dark:text-gray-400">Balance</label>
 
           <EmptyText />
         </div>
@@ -28,7 +28,7 @@ export default function DepositFormSkeleton() {
 
       <div className="w-full flex flex-col gap-4">
         <div className="flex justify-between text-xl">
-          <label className=" text-white">Stake for</label>
+          <label>Stake for</label>
           <TextSkeleton className="w-24" />
         </div>
         <input
@@ -52,7 +52,7 @@ export default function DepositFormSkeleton() {
 
       <button
         type="submit"
-        className="mt-4 rounded-md w-full p-4 animate-pulse bg-zinc-900 opacity-30"
+        className="mt-4 rounded-md w-full p-4 animate-pulse bg-zinc-500 dark:bg-zinc-900 opacity-30"
         disabled
       >
         Stake

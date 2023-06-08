@@ -20,8 +20,8 @@ export default function Dropdown() {
   };
 
   return (
-    <div className="dark:text-gray-100 -mt-14 sm:mt-0">
-      <Menu as="div" className="sm:relative">
+    <div className="dark:text-gray-100 -mt-14 md:mt-0">
+      <Menu as="div" className="md:relative">
         <div className="text-right">
           <Menu.Button className="inline-flex justify-center items-center p-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 text-xl">
             <FiMenu />
@@ -37,11 +37,11 @@ export default function Dropdown() {
           leaveTo="transform opacity-0 scale-95"
         >
           <Menu.Items
-            className="sm:absolute sm:right-0 w-full sm:w-64 mt-2 origin-top-right sm:rounded-md dark:text-white border-y sm:border border-black dark:border-white border-opacity-10 dark:border-opacity-10 bg-zinc-200 sm:bg-white shadow-inner sm:shadow-lg dark:bg-zinc-900 bg-opacity-70 backdrop-blur backdrop-filter
+            className="md:absolute md:right-0 w-full md:w-64 mt-2 origin-top-right md:rounded-md dark:text-white border-y md:border border-black dark:border-white border-opacity-10 dark:border-opacity-10 bg-zinc-200 md:bg-white shadow-inner md:shadow-lg dark:bg-zinc-900 bg-opacity-70 backdrop-blur backdrop-filter
           "
           >
             <div className="py-1">
-              <div className="sm:hidden mb-2">
+              <div className="md:hidden mb-2">
                 {NAV_LINKS.map(({ label, href, Logo }) => (
                   <Menu.Item key={href}>
                     <Link

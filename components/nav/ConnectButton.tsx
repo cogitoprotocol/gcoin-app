@@ -28,7 +28,7 @@ export default function MyConnectButton() {
               {
                 "opacity-0 pointer-events-none select-none": !ready,
               },
-              "inline-block ml-4 sm:ml-0 sm:flex-1"
+              "inline-block ml-4 md:ml-0 md:flex-1"
             )}
             {...(!ready && {
               "aria-hidden": true,
@@ -40,7 +40,7 @@ export default function MyConnectButton() {
                   <button
                     onClick={openConnectModal}
                     type="button"
-                    className="bg-gradient-to-bl from-violet-600 to-purple-900 text-white px-4 py-3 rounded-md"
+                    className="bg-gradient-to-bl from-violet-600 to-purple-900 px-4 py-3 rounded-md"
                   >
                     Connect Wallet
                   </button>
@@ -65,7 +65,7 @@ export default function MyConnectButton() {
                   <button
                     type="button"
                     onClick={openChainModal}
-                    className="hidden sm:flex items-center px-4 py-3 bg-black bg-opacity-0 hover:bg-opacity-5 dark:bg-white dark:bg-opacity-0 dark:hover:bg-opacity-5 transition-opacity"
+                    className="hidden md:flex items-center px-4 py-3 bg-black bg-opacity-0 hover:bg-opacity-5 dark:bg-white dark:bg-opacity-0 dark:hover:bg-opacity-5 transition-opacity"
                   >
                     {chain.hasIcon && (
                       <div

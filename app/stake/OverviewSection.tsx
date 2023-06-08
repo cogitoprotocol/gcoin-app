@@ -12,7 +12,7 @@ export default function OverviewSection() {
     <Section className="w-full max-w-md mb-8">
       <h1 className="w-full text-3xl">GCOIN Staking</h1>
 
-      <div className="w-full text-zinc-300 text-sm">
+      <div className="w-full text-sm">
         <div className="flex justify-between">
           <div>Total GCOIN Staked</div>
           <div>

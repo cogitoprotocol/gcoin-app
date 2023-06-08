@@ -12,7 +12,7 @@ export default function Section({
     <section
       className={classNames(
         className,
-        "bg-gradient-to-bl from-violet-800 via-purple-900 to-purple-950 bg-opacity-10 rounded-lg p-8 flex flex-col items-center gap-4 text-white"
+        "bg-gradient-to-bl from-light-section-light to-light-section-dark dark:bg-gradient-to-bl dark:from-dark-section-light dark:to-dark-section-dark rounded-lg p-8 flex flex-col gap-4 dark:text-white"
       )}
       {...props}
     >

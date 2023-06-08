@@ -80,6 +80,14 @@ export default function MyStakingForm() {
     return null;
   }
 
+  if (userStakingInfoListResult.data.stakes.length == 0) {
+    return (
+      <div className="h-16 bg-black bg-opacity-5 rounded-lg flex items-center justify-center text-sm">
+        No GCOIN staked.
+      </div>
+    );
+  }
+
   return (
     <>
       {userStakingInfoListResult.data.stakes.map(
@@ -109,7 +117,7 @@ export default function MyStakingForm() {
                     )}
                     % APY
                   </div>
-                  <div className="text-gray-400">
+                  <div className="text-gray-600 dark:text-gray-400">
                     Locked until{" "}
                     {unlockDt.toLocaleString(DateTime.DATETIME_FULL)}
                   </div>
@@ -119,10 +127,10 @@ export default function MyStakingForm() {
                     className={classNames(
                       {
                         "cursor-progress": loadingIndexes[index],
-                        "cursor-pointer text-white hover:bg-purple-600":
+                        "cursor-pointer hover:bg-accent-active":
                           !isLocked && !loadingIndexes[index],
                       },
-                      "mt-4 rounded-md px-4 py-2 bg-purple-500 bg-opacity-50 focus:outline-none transition-colors"
+                      "mt-4 rounded-md px-4 py-2 bg-accent focus:outline-none transition-colors"
                     )}
                     disabled={isLocked || loadingIndexes[index]}
                     onClick={() => onWithdraw(index)}

@@ -10,13 +10,13 @@ import TradeFormSkeleton from "./TradeFormSkeleton";
 export default function TradeSection() {
   return (
     <Section className="w-full max-w-md mb-8">
-      <h1 className="w-full text-3xl">Mint GCOIN</h1>
+      <h1 className="text-3xl">Mint GCOIN</h1>
 
       <ClientOnly fallback={<TradeFormSkeleton />}>
         <TradeForm />
       </ClientOnly>
 
-      <div className="w-full text-zinc-300 text-sm">
+      <div className="text-gray-600 dark:text-gray-300 text-sm">
         <div className="flex justify-between">
           <div>Rate</div>
           <div>

@@ -19,17 +19,16 @@ export default function ClickableBalanceLabel({
   return value != null ? (
     <span className="inline-flex gap-2">
       <a
-        className={classNames(
-          { "cursor-pointer": onClick != null },
-          "text-purple-300"
-        )}
+        className={classNames({
+          "cursor-pointer hover:underline": onClick != null,
+        })}
         onClick={handleClick}
       >
         {formatNumber(value, { decimals })}
       </a>
       {onClick != undefined && (
         <a
-          className="cursor-pointer hover:underline text-amber-300"
+          className="cursor-pointer hover:underline text-accent"
           onClick={handleClick}
         >
           Max

@@ -1,5 +1,6 @@
 "use client";
 
+import SubmitButton, { FormState } from "@/components/common/SubmitButton";
 import { GCOIN_DECIMALS, USDC_DECIMALS } from "@/lib/constants";
 import { getContractAddresses } from "@/lib/wagmi";
 import {
@@ -20,21 +21,13 @@ import {
   waitForTransaction,
   writeContract,
 } from "@wagmi/core";
-import classNames from "classnames";
 import Image from "next/image";
 import { FormEventHandler, useEffect, useState } from "react";
 import { BsArrowDown } from "react-icons/bs";
-import { CgSpinner } from "react-icons/cg";
 import { useAccount } from "wagmi";
 import ClickableBalanceLabel from "../../components/common/ClickableBalanceLabel";
 import gcoinSvg from "../img/gcoin.svg";
 import usdcSvg from "../img/usdc.svg";
-
-enum FormState {
-  READY,
-  LOADING,
-  DISABLED,
-}
 
 export default function TradeForm() {
   const userAccount = useAccount();
@@ -234,13 +227,10 @@ export default function TradeForm() {
   };
 
   return (
-    <form
-      className="w-full flex flex-col items-center gap-4"
-      onSubmit={onSubmit}
-    >
-      <div className="w-full rounded-md bg-black bg-opacity-50 p-4 flex flex-col gap-2 focus-within:outline-purple-400 focus-within:outline focus-within:outline-2">
+    <form className="flex flex-col items-center gap-4" onSubmit={onSubmit}>
+      <div className="rounded-md bg-black bg-opacity-10 dark:bg-opacity-50 p-4 flex flex-col gap-2 focus-within:outline-accent focus-within:outline focus-within:outline-2">
         <div className="flex justify-between text-sm">
-          <label className="text-gray-400">Balance</label>
+          <label className="text-gray-600 dark:text-gray-400">Balance</label>
 
           <ClickableBalanceLabel
             onClick={setToMax}
@@ -261,15 +251,15 @@ export default function TradeForm() {
           />
 
           <Image alt="USDC" src={usdcSvg} width={24} height={24} />
-          <label className="ml-2 text-white">{inputSymbolResult?.data}</label>
+          <label className="ml-2">{inputSymbolResult?.data}</label>
         </div>
       </div>
 
       <BsArrowDown />
 
-      <div className="w-full rounded-md bg-black bg-opacity-50 p-4 flex flex-col gap-2 focus-within:outline-purple-400 focus-within:outline focus-within:outline-2">
+      <div className="rounded-md bg-black bg-opacity-10 dark:bg-opacity-50 p-4 flex flex-col gap-2 focus-within:outline-accent focus-within:outline focus-within:outline-2">
         <div className="flex justify-between text-sm">
-          <label className="text-gray-400">Balance</label>
+          <label className="text-gray-600 dark:text-gray-400">Balance</label>
 
           <ClickableBalanceLabel value={outputBalanceResult.data} />
         </div>
@@ -286,40 +276,15 @@ export default function TradeForm() {
           />
 
           <Image alt="GCOIN" src={gcoinSvg} width={24} height={24} />
-          <label className="ml-2 text-white">GCOIN</label>
+          <label className="ml-2">GCOIN</label>
         </div>
       </div>
 
-      <button
-        type="submit"
-        className={classNames(
-          {
-            "cursor-progress": formState === FormState.LOADING,
-            "cursor-not-allowed": formState === FormState.DISABLED,
-            "text-gray-400": formState !== FormState.READY,
-            "cursor-pointer text-white hover:bg-purple-600":
-              formState === FormState.READY,
-          },
-          "mt-4 rounded-md w-full p-4 bg-purple-500 bg-opacity-50 focus:outline-none transition-colors"
-        )}
-        disabled={formState !== FormState.READY}
-      >
-        {gcoinPausedResult.data === true ? (
-          "Minting Unavailable"
-        ) : formState === FormState.LOADING ? (
-          <span className="flex items-center gap-2 justify-center">
-            <CgSpinner className="animate-spin" /> Submitting...
-          </span>
-        ) : userAccount.isConnected ? (
-          needsAllowance ? (
-            `Approve ${inputSymbolResult?.data}`
-          ) : (
-            "Swap"
-          )
-        ) : (
-          "Connect Wallet"
-        )}
-      </button>
+      <SubmitButton
+        state={formState}
+        value={needsAllowance ? `Approve ${inputSymbolResult?.data}` : "Swap"}
+        isConnected={userAccount.isConnected}
+      />
     </form>
   );
 }
