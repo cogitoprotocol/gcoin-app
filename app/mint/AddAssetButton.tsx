@@ -2,7 +2,7 @@
 
 import ClientOnly from "@/components/common/ClientOnly";
 import { GCOIN_DECIMALS } from "@/lib/constants";
-import { getContractAddresses } from "@/lib/wagmi";
+import { gCoinAddress } from "@/lib/wagmiHooks";
 import { getWalletClient } from "@wagmi/core";
 import { BsWallet2 } from "react-icons/bs";
 import { useAccount } from "wagmi";
@@ -13,15 +13,13 @@ export default function AddAssetButton() {
     return null;
   }
 
-  const outputAddress = getContractAddresses().GCoin;
-
   // Add token to wallet
   const handleAddAsset = async () => {
     const walletClient = await getWalletClient();
     walletClient?.watchAsset({
       type: "ERC20",
       options: {
-        address: outputAddress,
+        address: gCoinAddress,
         symbol: "GCOIN",
         decimals: GCOIN_DECIMALS,
       },

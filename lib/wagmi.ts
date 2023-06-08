@@ -4,8 +4,6 @@ import { configureChains, createConfig } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { infuraProvider } from "wagmi/providers/infura";
 import { publicProvider } from "wagmi/providers/public";
-import localhostContracts from "./contracts/localhost.json";
-import sepoliaContracts from "./contracts/sepolia.json";
 
 const config = configureChains(
   [process.env.NEXT_PUBLIC_NETWORK === "sepolia" ? sepolia : localhost],
@@ -29,15 +27,3 @@ export const wagmiConfig = createConfig({
   connectors,
   publicClient: config.publicClient,
 });
-
-export const getContractAddresses = () => {
-  let contracts = localhostContracts;
-  if (process.env.NEXT_PUBLIC_NETWORK === "sepolia") {
-    contracts = sepoliaContracts;
-  }
-  // else if (process.env.NEXT_PUBLIC_NETWORK === 'mainnet') {}
-
-  return contracts as {
-    [x: string]: `0x${string}`;
-  };
-};

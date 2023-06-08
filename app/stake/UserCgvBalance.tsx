@@ -2,13 +2,11 @@
 
 import { CGV_DECIMALS } from "@/lib/constants";
 import { formatNumber } from "@/lib/numbers";
-import { getContractAddresses } from "@/lib/wagmi";
-import { useErc20BalanceOf } from "@/lib/wagmiHooks";
+import { cgvAddress, useErc20BalanceOf } from "@/lib/wagmiHooks";
 import { Address, useAccount } from "wagmi";
 
 export default function UserCgvBalance() {
   const userAccount = useAccount();
-  const cgvAddress = getContractAddresses().CGV;
   const balance = useErc20BalanceOf({
     address: cgvAddress,
     args: [userAccount.address as Address],

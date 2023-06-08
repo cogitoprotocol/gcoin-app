@@ -3,8 +3,11 @@
 import SubmitButton, { FormState } from "@/components/common/SubmitButton";
 import { USDC_DECIMALS } from "@/lib/constants";
 import { formatNumber } from "@/lib/numbers";
-import { getContractAddresses } from "@/lib/wagmi";
-import { usdTestABI, useErc20BalanceOf } from "@/lib/wagmiHooks";
+import {
+  usdTestABI,
+  usdTestAddress,
+  useErc20BalanceOf,
+} from "@/lib/wagmiHooks";
 import {
   useAddRecentTransaction,
   useConnectModal,
@@ -18,7 +21,6 @@ import usdcSvg from "../img/usdc.svg";
 export default function ClaimForm() {
   const userAccount = useAccount();
 
-  const usdTestAddress = getContractAddresses().USDTest;
   const [formState, setFormState] = useState(FormState.READY);
   useEffect(() => {
     setFormState(

@@ -1,16 +1,18 @@
 "use client";
 
 import { GCOIN_DECIMALS } from "@/lib/constants";
-import { getContractAddresses } from "@/lib/wagmi";
-import { useErc20Symbol, useGCoinGetGCoinValue } from "@/lib/wagmiHooks";
+import {
+  usdTestAddress,
+  useErc20Symbol,
+  useGCoinGetGCoinValue,
+} from "@/lib/wagmiHooks";
 
 export default function GCoinPriceRate() {
   const gcoinValueResult = useGCoinGetGCoinValue({
     watch: true,
   });
-  const inputAddress = getContractAddresses().USDTest;
   const inputSymbolResult = useErc20Symbol({
-    address: inputAddress,
+    address: usdTestAddress,
   });
 
   return (

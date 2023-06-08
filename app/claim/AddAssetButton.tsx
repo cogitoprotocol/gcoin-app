@@ -2,7 +2,7 @@
 
 import ClientOnly from "@/components/common/ClientOnly";
 import { USDC_DECIMALS } from "@/lib/constants";
-import { getContractAddresses } from "@/lib/wagmi";
+import { usdTestAddress } from "@/lib/wagmiHooks";
 import { getWalletClient } from "@wagmi/core";
 import { BsWallet2 } from "react-icons/bs";
 import { useAccount } from "wagmi";
@@ -12,8 +12,6 @@ export default function AddAssetButton() {
   if (!userAccount.isConnected) {
     return null;
   }
-
-  const usdTestAddress = getContractAddresses().USDTest;
 
   // Add token to wallet
   const handleAddAsset = async () => {

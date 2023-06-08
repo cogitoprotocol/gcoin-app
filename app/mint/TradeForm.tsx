@@ -2,10 +2,10 @@
 
 import SubmitButton, { FormState } from "@/components/common/SubmitButton";
 import { GCOIN_DECIMALS, USDC_DECIMALS } from "@/lib/constants";
-import { getContractAddresses } from "@/lib/wagmi";
 import {
   gCoinABI,
   gCoinAddress,
+  usdTestAddress,
   useErc20BalanceOf,
   useErc20Decimals,
   useErc20Symbol,
@@ -35,8 +35,8 @@ export default function TradeForm() {
   const [inputValue, setInputValue] = useState("");
   const [outputValue, setOutputValue] = useState("");
 
-  const inputAddress = getContractAddresses().USDTest;
-  const outputAddress = getContractAddresses().GCoin;
+  const inputAddress = usdTestAddress;
+  const outputAddress = gCoinAddress;
   const inputSymbolResult = useErc20Symbol({
     address: inputAddress,
   });
