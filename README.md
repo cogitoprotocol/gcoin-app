@@ -44,5 +44,13 @@ Generates a static export that can be hosted on IPFS or traditional cloud.
 
 ```bash
 npm run build
-npx serve@latest out
+npm run serve
+```
+
+### Notes
+
+If you see this error when building, just try it again.
+
+```
+Type error: Type instantiation is excessively deep and possibly infinite.
 ```

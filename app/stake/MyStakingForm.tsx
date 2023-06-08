@@ -82,7 +82,7 @@ export default function MyStakingForm() {
 
   if (userStakingInfoListResult.data.stakes.length == 0) {
     return (
-      <div className="h-16 bg-black bg-opacity-5 rounded-lg flex items-center justify-center text-sm">
+      <div className="h-12 bg-black bg-opacity-5 flex items-center justify-center">
         No GCOIN staked.
       </div>
     );

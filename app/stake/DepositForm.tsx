@@ -127,7 +127,7 @@ export default function DepositForm() {
       });
       setRewardsRate((Number(rate) / gcoinPrice) * cgvPrice);
     })();
-  }, [durationDays]);
+  }, [durationDays, gcoinPrice, cgvPrice]);
 
   // Form submission
   const [error, setError] = useState("");
