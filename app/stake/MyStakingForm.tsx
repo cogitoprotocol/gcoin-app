@@ -81,7 +81,7 @@ export default function MyStakingForm() {
   }
 
   return (
-    <div className="w-full flex flex-col gap-2">
+    <>
       {userStakingInfoListResult.data.stakes.map(
         ({ amount, timestamp, duration, rewardMultiplier }, index) => {
           const unlockDt = DateTime.fromSeconds(Number(timestamp)).plus({
@@ -147,6 +147,6 @@ export default function MyStakingForm() {
           );
         }
       )}
-    </div>
+    </>
   );
 }

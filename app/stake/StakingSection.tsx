@@ -33,7 +33,7 @@ export default function StakingSection() {
             <DepositForm />
           </Tab.Panel>
 
-          <Tab.Panel as={Fragment}>
+          <Tab.Panel className="w-full flex flex-col gap-2">
             <MyStakingForm />
           </Tab.Panel>
         </Tab.Panels>
