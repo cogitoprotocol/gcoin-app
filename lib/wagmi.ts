@@ -1,13 +1,14 @@
 import { getDefaultWallets } from "@rainbow-me/rainbowkit";
-import { localhost } from "@wagmi/core/chains";
+import { localhost, sepolia } from "@wagmi/core/chains";
 import { configureChains, createConfig } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { infuraProvider } from "wagmi/providers/infura";
 import { publicProvider } from "wagmi/providers/public";
 import localhostContracts from "./contracts/localhost.json";
+import sepoliaContracts from "./contracts/sepolia.json";
 
 const config = configureChains(
-  [localhost],
+  [process.env.NEXT_PUBLIC_NETWORK === "sepolia" ? sepolia : localhost],
   [
     alchemyProvider({ apiKey: "pCSDyMOuFkzLuUW3FFxpDkl2OHWB-ndx" }),
     infuraProvider({ apiKey: "dfe878e9f9764f57ad1bb851fe7e5919" }),
@@ -31,8 +32,10 @@ export const wagmiConfig = createConfig({
 
 export const getContractAddresses = () => {
   let contracts = localhostContracts;
-  // if (process.env.GCOIN_CHAIN === 'sepolia') {}
-  // else if (process.env.GCOIN_CHAIN === 'mainnet') {}
+  if (process.env.NEXT_PUBLIC_NETWORK === "sepolia") {
+    contracts = sepoliaContracts;
+  }
+  // else if (process.env.NEXT_PUBLIC_NETWORK === 'mainnet') {}
 
   return contracts as {
     [x: string]: `0x${string}`;

@@ -15,9 +15,14 @@ npm i
 
 ## Environment Variables
 
+This can go into a `.env.local` file:
+
 ```sh
 # Specify the path to your gcoin repo if it's not in the same parent directory
 GCOIN_DIR=...
+
+# One of: localhost (default), sepolia, mainnet
+NEXT_PUBLIC_NETWORK=...
 ```
 
 ## Development
