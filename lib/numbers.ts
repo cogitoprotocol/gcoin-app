@@ -25,3 +25,23 @@ export const formatNumber = (
     maximumFractionDigits,
   }).format(n);
 };
+
+/** Returns a BigInt from the given number, multiplied or divided by 10 ^ decimals */
+export const withDecimals = (n: number | string | bigint, decimals: number) => {
+  const s = String(n);
+  let sepIdx = s.indexOf(".");
+  if (sepIdx == -1) sepIdx = s.length;
+  if (decimals < 0) {
+    return BigInt(s.substring(0, sepIdx + decimals));
+  }
+
+  const remaining = Math.max(0, s.length - sepIdx - 1);
+  const out =
+    s.substring(0, sepIdx) +
+    s.substring(sepIdx + 1, sepIdx + 1 + Math.min(remaining, decimals)) +
+    "0".repeat(Math.max(0, decimals - remaining));
+  return BigInt(out);
+};
+
+export const pluralize = (str: string, n: number) =>
+  n === 1 ? str : str + "s";

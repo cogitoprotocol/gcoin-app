@@ -26,9 +26,9 @@ import { FormEventHandler, useEffect, useState } from "react";
 import { BsArrowDown } from "react-icons/bs";
 import { CgSpinner } from "react-icons/cg";
 import { useAccount } from "wagmi";
+import ClickableBalanceLabel from "../../components/common/ClickableBalanceLabel";
 import gcoinSvg from "../img/gcoin.svg";
 import usdcSvg from "../img/usdc.svg";
-import ClickableBalanceLabel from "./ClickableBalanceLabel";
 
 enum FormState {
   READY,
