@@ -74,7 +74,7 @@ export default function ClaimForm() {
       className="w-full flex flex-col items-center gap-4"
       onSubmit={onSubmit}
     >
-      <div className="w-full rounded-md bg-black bg-opacity-10 dark:bg-opacity-50 p-4 flex flex-col gap-2 focus-within:outline-purple-400 focus-within:outline focus-within:outline-2">
+      <div className="w-full rounded-md bg-black bg-opacity-5 dark:bg-opacity-30 p-4 flex flex-col gap-2 focus-within:outline-purple-400 focus-within:outline focus-within:outline-2">
         <div className="flex justify-between text-sm">
           <label className="text-gray-600 dark:text-gray-400">Balance</label>
         </div>

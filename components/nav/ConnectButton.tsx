@@ -5,6 +5,9 @@ import classNames from "classnames";
 import { CgSpinner } from "react-icons/cg";
 
 export default function MyConnectButton() {
+  const buttonClasses =
+    "px-4 py-3 whitespace-pre hover:text-accent bg-light hover:bg-opacity-50 dark:bg-dark-section-dark dark:hover:bg-opacity-80 transition-all";
+
   return (
     <ConnectButton.Custom>
       {({
@@ -40,7 +43,7 @@ export default function MyConnectButton() {
                   <button
                     onClick={openConnectModal}
                     type="button"
-                    className="bg-zinc-200 hover:bg-zinc-100 dark:bg-dark-section-dark dark:hover:bg-dark-section-light transition-colors px-4 py-3 rounded-md"
+                    className={classNames("rounded-md", buttonClasses)}
                   >
                     Connect Wallet
                   </button>
@@ -51,51 +54,56 @@ export default function MyConnectButton() {
                   <button
                     onClick={openChainModal}
                     type="button"
-                    className="bg-zinc-300 dark:bg-zinc-800 dark:text-white px-4 py-3 rounded-md"
+                    className={classNames("rounded-md", buttonClasses)}
                   >
                     Switch network
                   </button>
                 );
               }
               return (
-                <div className="flex items-center outline outline-zinc-200 dark:outline-zinc-900 shadow-md dark:shadow-none dark:text-white rounded-md">
+                <div className="relative">
                   {account.hasPendingTransactions && (
-                    <CgSpinner className="animate-spin text-zinc-500" />
+                    <CgSpinner className="h-full -ml-8 absolute animate-spin opacity-50" />
                   )}
-                  <button
-                    type="button"
-                    onClick={openChainModal}
-                    className="hidden md:flex items-center px-4 py-3 bg-black bg-opacity-0 hover:bg-opacity-5 dark:bg-white dark:bg-opacity-0 dark:hover:bg-opacity-5 transition-opacity"
-                  >
-                    {chain.hasIcon && (
-                      <div
-                        style={{
-                          background: chain.iconBackground,
-                          width: 12,
-                          height: 12,
-                          borderRadius: 999,
-                          overflow: "hidden",
-                          marginRight: 4,
-                        }}
-                      >
-                        {chain.iconUrl && (
-                          <img
-                            alt={chain.name ?? "Chain icon"}
-                            src={chain.iconUrl}
-                            style={{ width: 12, height: 12 }}
-                          />
-                        )}
-                      </div>
-                    )}
-                    <span className="">{chain.name}</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={openAccountModal}
-                    className="px-4 py-3 bg-black bg-opacity-0 hover:bg-opacity-5 dark:bg-white dark:bg-opacity-0 dark:hover:bg-opacity-5 transition-opacity"
-                  >
-                    {account.displayName}
-                  </button>
+                  <div className="flex items-center outline outline-zinc-200 dark:outline-zinc-900 shadow-md dark:shadow-none dark:text-white rounded-md">
+                    <button
+                      type="button"
+                      onClick={openChainModal}
+                      className={classNames(
+                        "hidden lg:flex items-center",
+                        buttonClasses
+                      )}
+                    >
+                      {chain.hasIcon && (
+                        <div
+                          style={{
+                            background: chain.iconBackground,
+                            width: 12,
+                            height: 12,
+                            borderRadius: 999,
+                            overflow: "hidden",
+                            marginRight: 4,
+                          }}
+                        >
+                          {chain.iconUrl && (
+                            <img
+                              alt={chain.name ?? "Chain icon"}
+                              src={chain.iconUrl}
+                              style={{ width: 12, height: 12 }}
+                            />
+                          )}
+                        </div>
+                      )}
+                      <span className="">{chain.name}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={openAccountModal}
+                      className={buttonClasses}
+                    >
+                      {account.displayName}
+                    </button>
+                  </div>
                 </div>
               );
             })()}
