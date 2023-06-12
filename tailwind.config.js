@@ -2,11 +2,7 @@
 
 module.exports = {
   darkMode: "class",
-  content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     extend: {
       colors: {
@@ -18,11 +14,11 @@ module.exports = {
         accent: "#ff7d08",
       },
       backgroundImage: {
-        // relative to ./app/globals.css
+        // relative to ./public/
         "dark-pattern":
-          "linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0)), url('./img/dark-bricks.png')",
+          "linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0)), url('/img/dark-bricks.png')",
         "light-pattern":
-          "linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0)), url('./img/light-bricks.png')",
+          "linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0)), url('/img/light-bricks.png')",
 
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
