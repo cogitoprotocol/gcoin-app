@@ -7,7 +7,7 @@ import ClaimFormSkeleton from "./ClaimFormSkeleton";
 export default function ClaimPage() {
   return (
     <>
-      <Section className="w-full max-w-md flex flex-col gap-4">
+      <Section className="p-8 w-full max-w-md flex flex-col gap-4">
         <h1 className="text-3xl">Testnet USD</h1>
 
         <p className="text-sm">

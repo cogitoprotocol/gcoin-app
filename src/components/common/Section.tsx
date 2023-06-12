@@ -12,7 +12,7 @@ export default function Section({
     <section
       className={classNames(
         className,
-        "rounded-lg p-8 shadow-md bg-zinc-50 dark:bg-gradient-to-bl dark:from-dark-section-light dark:to-dark-section-dark dark:text-white"
+        "rounded-lg shadow-md bg-zinc-50 dark:bg-gradient-to-bl dark:from-dark-section-light dark:to-dark-section-dark dark:text-white"
       )}
       {...props}
     >

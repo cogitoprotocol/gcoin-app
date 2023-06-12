@@ -9,7 +9,7 @@ const skeleton = <TextSkeleton className="w-20 h-4" />;
 
 export default function OverviewStatsSection() {
   return (
-    <Section className="w-full max-w-lg flex flex-col divide-black divide-opacity-5 divide-y-2 sm:divide-y-0 sm:flex-row sm:divide-x-2 mb-8">
+    <Section className="p-4 w-full max-w-lg flex flex-col divide-black divide-opacity-10 divide-y-2 sm:divide-y-0 sm:flex-row sm:divide-x-2 mb-8">
       <div className="sm:flex-1 h-16 flex flex-col items-center justify-center">
         <h2 className="text-xl font-medium">
           <ClientOnly fallback={skeleton}>

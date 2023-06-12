@@ -9,7 +9,7 @@ import TradeFormSkeleton from "./TradeFormSkeleton";
 
 export default function TradeSection() {
   return (
-    <Section className="w-full max-w-md mb-8 flex flex-col gap-4">
+    <Section className="p-8 w-full max-w-md mb-8 flex flex-col gap-4">
       <h1 className="text-3xl">Mint GCOIN</h1>
 
       <ClientOnly fallback={<TradeFormSkeleton />}>

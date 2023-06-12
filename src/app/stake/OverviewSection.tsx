@@ -9,7 +9,7 @@ import UserStake from "./UserStake";
 
 export default function OverviewSection() {
   return (
-    <Section className="w-full max-w-md mb-8 flex flex-col gap-4">
+    <Section className="p-8 w-full max-w-md mb-8 flex flex-col gap-4">
       <h1 className="w-full text-3xl">GCOIN Staking</h1>
 
       <div className="w-full text-sm">
