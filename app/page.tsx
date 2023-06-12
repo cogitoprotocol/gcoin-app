@@ -1,3 +1,12 @@
+import OverviewStatsSection from "./mint/OverviewStatsSection";
+import TradeSection from "./mint/TradeSection";
+
 export default function HomePage() {
-  return <>Welcome to Cogito</>;
+  return (
+    <>
+      <OverviewStatsSection />
+
+      <TradeSection />
+    </>
+  );
 }

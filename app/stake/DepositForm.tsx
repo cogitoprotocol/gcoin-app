@@ -10,7 +10,7 @@ import {
   SECONDS_IN_DAY,
 } from "@/lib/constants";
 import { getRevertError } from "@/lib/errors";
-import { formatNumber, pluralize, withDecimals } from "@/lib/numbers";
+import { formatNumber, pluralize, toBigIntWithDecimals } from "@/lib/numbers";
 import { useCgvPrice, useGcoinPrice } from "@/lib/prices";
 import {
   gCoinAddress,
@@ -71,7 +71,7 @@ export default function DepositForm() {
   // Allowance
   const [needsAllowance, setNeedsAllowance] = useState(false);
   const checkAllowance = async () => {
-    const value = withDecimals(inputValue, GCOIN_DECIMALS);
+    const value = toBigIntWithDecimals(inputValue, GCOIN_DECIMALS);
     if (!!userAccount.address && !!value) {
       try {
         const allowance = await readContract({
@@ -105,7 +105,7 @@ export default function DepositForm() {
       return;
     }
 
-    const value = withDecimals(inputValue, GCOIN_DECIMALS);
+    const value = toBigIntWithDecimals(inputValue, GCOIN_DECIMALS);
     console.log(`value`, value);
     console.log(`gcoinBalanceResult.data`, gcoinBalanceResult.data);
     if (
@@ -149,7 +149,7 @@ export default function DepositForm() {
 
     if (!inputValue) return;
 
-    const value = withDecimals(inputValue, GCOIN_DECIMALS);
+    const value = toBigIntWithDecimals(inputValue, GCOIN_DECIMALS);
     if (value < 0) return;
 
     setFormState(FormState.LOADING);

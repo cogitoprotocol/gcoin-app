@@ -5,11 +5,15 @@ import { formatNumberUSD } from "@/lib/numbers";
 import { useGCoinGetGCoinValue } from "@/lib/wagmiHooks";
 
 export default function GCoinPrice() {
-  const gcoinValue = useGCoinGetGCoinValue({
+  const result = useGCoinGetGCoinValue({
     watch: true,
   });
-  const gcoinDenominator = Math.pow(10, GCOIN_DECIMALS);
 
-  const gcoinUsd = Number(gcoinValue.data ?? 0) / gcoinDenominator;
-  return <>{formatNumberUSD(gcoinUsd, 4)}</>;
+  if (result.data == null) {
+    return null;
+  }
+
+  return (
+    <>{formatNumberUSD(result.data, { digits: 4, decimals: GCOIN_DECIMALS })}</>
+  );
 }

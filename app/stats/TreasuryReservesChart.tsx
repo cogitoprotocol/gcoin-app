@@ -84,7 +84,7 @@ const CustomizedLabel = (props: any) => {
             textAnchor="middle"
             className="text-md fill-zinc-600 dark:fill-zinc-400"
           >
-            {formatNumberUSD(sum, 0)}
+            {formatNumberUSD(sum, { digits: 0 })}
           </text>
         </>
       )}

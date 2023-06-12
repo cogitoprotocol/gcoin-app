@@ -1,46 +1,48 @@
-export const formatNumberUSD = (number: any, digits: number = 2) => {
-  return Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: digits,
-    maximumFractionDigits: digits,
-  }).format(number);
-};
+import Big from "big.js";
 
-export const formatNumber = (
-  number: any,
+export const formatNumberUSD = (
+  number: number | string | bigint,
   opts?: { digits?: number; decimals?: number }
 ) => {
   opts = opts ?? { decimals: 0 };
   opts.decimals = opts.decimals ?? 0;
 
-  let n = number;
-  if (typeof number !== "number") {
-    n = Number(n);
-  }
-  n /= Math.pow(10, opts.decimals);
-  const maximumFractionDigits =
-    typeof opts.digits === "undefined" ? (number < 1 ? 8 : 4) : opts.digits;
+  const n = toBigWithDecimals(number, -opts.decimals);
   return Intl.NumberFormat("en-US", {
-    maximumFractionDigits,
-  }).format(n);
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: opts.digits,
+    maximumFractionDigits: opts.digits,
+  }).format(n.toNumber());
 };
 
-/** Returns a BigInt from the given number, multiplied or divided by 10 ^ decimals */
-export const withDecimals = (n: number | string | bigint, decimals: number) => {
-  const s = String(n);
-  let sepIdx = s.indexOf(".");
-  if (sepIdx == -1) sepIdx = s.length;
-  if (decimals < 0) {
-    return BigInt(s.substring(0, sepIdx + decimals));
-  }
+export const formatNumber = (
+  number: number | string | bigint,
+  opts?: { digits?: number; decimals?: number }
+) => {
+  opts = opts ?? { decimals: 0 };
+  opts.decimals = opts.decimals ?? 0;
 
-  const remaining = Math.max(0, s.length - sepIdx - 1);
-  const out =
-    s.substring(0, sepIdx) +
-    s.substring(sepIdx + 1, sepIdx + 1 + Math.min(remaining, decimals)) +
-    "0".repeat(Math.max(0, decimals - remaining));
-  return BigInt(out);
+  const n = Big(String(number));
+  const maximumFractionDigits =
+    typeof opts.digits === "undefined" ? (n.lt(1) ? 8 : 4) : opts.digits;
+  return Intl.NumberFormat("en-US", {
+    maximumFractionDigits,
+  }).format(n.times(Math.pow(10, -opts.decimals)).toNumber());
+};
+
+/** Returns the given number multiplied by 10 ^ decimals, as a Big */
+export const toBigWithDecimals = (
+  n: number | string | bigint,
+  decimals: number
+) => Big(String(n)).times(Math.pow(10, decimals));
+
+/** Returns the given number multiplied by 10 ^ decimals, as a BigInt */
+export const toBigIntWithDecimals = (
+  n: number | string | bigint,
+  decimals: number
+) => {
+  return BigInt(toBigWithDecimals(n, decimals).toFixed(0));
 };
 
 export const pluralize = (str: string, n: number) =>

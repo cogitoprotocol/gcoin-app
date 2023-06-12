@@ -11,5 +11,5 @@ export default function GCoinMarketCap() {
   const gcoinUsd = Number(gcoinValue?.data ?? 0) / gcoinDenominator;
   const gcoinMarketCap =
     (Number(gcoinSupply?.data ?? BigInt(0)) / gcoinDenominator) * gcoinUsd;
-  return <>{formatNumberUSD(gcoinMarketCap, 0)}</>;
+  return <>{formatNumberUSD(gcoinMarketCap, { digits: 0 })}</>;
 }
