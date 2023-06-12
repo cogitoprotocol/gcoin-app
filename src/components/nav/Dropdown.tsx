@@ -104,7 +104,7 @@ export default function Dropdown() {
                       <span
                         className={classNames(
                           {
-                            "translate-x-5 text-purple-500": darkMode.value,
+                            "translate-x-5 text-black": darkMode.value,
                             "translate-x-1 text-yellow-500": !darkMode.value,
                           },
                           "inline-block h-4 w-4 transform rounded-full bg-white transition-transform text-xs"

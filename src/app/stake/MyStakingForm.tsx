@@ -105,7 +105,7 @@ export default function MyStakingForm() {
           const isLocked = unlockDt.diffNow().toMillis() > 0;
           return (
             <div className="flex flex-col gap-4" key={index}>
-              <div className="rounded-md bg-black bg-opacity-10 dark:bg-opacity-20 p-4 flex flex-col gap-2 focus-within:outline-purple-400 focus-within:outline focus-within:outline-2">
+              <div className="rounded-md bg-black bg-opacity-10 dark:bg-opacity-20 p-4 flex flex-col gap-2">
                 <div className="flex text-2xl items-center">
                   <Image
                     alt="GCOIN"

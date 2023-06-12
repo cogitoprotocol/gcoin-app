@@ -8,8 +8,8 @@ module.exports = {
       colors: {
         light: "#f2f2f7",
         dark: "#300030",
-        "dark-section-dark": "#480048",
-        "dark-section-light": "#601848",
+        "dark-section-dark": "#414640",
+        "dark-section-light": "#4F554E",
         "accent-active": "#FF9233",
         accent: "#ff7d08",
       },
