@@ -91,7 +91,7 @@ export default function Dropdown() {
                   <Menu.Item>
                     <Link
                       className={MENU_ITEM_CLASSES}
-                      href="https://cogito-protocol-2.gitbook.io/whitepaper/"
+                      href="https://cogitoprotocol.github.io/docs/"
                       target="_blank"
                     >
                       <div className="w-10 mr-4 pl-2">
