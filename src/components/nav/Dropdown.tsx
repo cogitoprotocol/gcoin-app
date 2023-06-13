@@ -6,12 +6,16 @@ import classNames from "classnames";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MouseEventHandler, useState } from "react";
+import { FaBook } from "react-icons/fa";
 import { FiMenu } from "react-icons/fi";
 import defaultTheme from "tailwindcss/defaultTheme";
 import useBreakpoint from "use-breakpoint";
-import { NAV_LINKS } from "./links";
+import { EXTERNAL_LINKS, NAV_LINKS } from "./links";
 
 const BREAKPOINTS = { sm: 0, md: parseInt(defaultTheme.screens.md) };
+
+const MENU_ITEM_CLASSES =
+  "p-3 flex w-full items-center bg-black bg-opacity-0 ui-active:bg-opacity-5 dark:bg-white dark:bg-opacity-0 dark:ui-active:bg-opacity-5 transition-opacity";
 
 export default function Dropdown() {
   const darkMode = useDarkMode(undefined, {
@@ -41,7 +45,7 @@ export default function Dropdown() {
           <>
             <div className="text-right">
               <Menu.Button
-                className="inline-flex justify-center items-center p-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 text-xl"
+                className="inline-flex justify-center items-center p-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 text-xl hover:text-accent transition-colors"
                 onClick={toggle}
               >
                 <FiMenu />
@@ -58,18 +62,15 @@ export default function Dropdown() {
             >
               <Menu.Items className="md:absolute md:right-0 w-full md:w-64 mt-2 origin-top-right md:rounded-md dark:text-white border-y md:border border-black dark:border-white border-opacity-10 dark:border-opacity-10 bg-zinc-200 md:bg-white shadow-inner md:shadow-lg dark:bg-dark-section-dark dark:bg-opacity-50 backdrop-blur backdrop-filter">
                 <div className="py-1">
-                  <div className="md:hidden mb-2">
+                  <div className="md:hidden">
                     {NAV_LINKS.map(({ label, href, Logo }) => {
                       const isActive = pathname.startsWith(href);
                       return (
                         <Menu.Item key={href}>
                           <Link
-                            className={classNames(
-                              "p-3 group flex w-full items-center bg-black bg-opacity-0 ui-active:bg-opacity-5 dark:bg-white dark:bg-opacity-0 dark:ui-active:bg-opacity-5 transition-opacity",
-                              {
-                                "bg-opacity-5 dark:bg-opacity-5": isActive,
-                              }
-                            )}
+                            className={classNames(MENU_ITEM_CLASSES, {
+                              "bg-opacity-5 dark:bg-opacity-5": isActive,
+                            })}
                             href={href}
                           >
                             <div className="w-10 mr-4 pl-2">
@@ -87,9 +88,22 @@ export default function Dropdown() {
                       );
                     })}
                   </div>
+                  <Menu.Item>
+                    <Link
+                      className={MENU_ITEM_CLASSES}
+                      href="https://cogito-protocol-2.gitbook.io/whitepaper/"
+                      target="_blank"
+                    >
+                      <div className="w-10 mr-4 pl-2">
+                        <FaBook />
+                      </div>
+                      <span>Docs</span>
+                    </Link>
+                  </Menu.Item>
+
                   <Menu.Item
                     as="button"
-                    className="p-3 group flex w-full items-center bg-black bg-opacity-0 ui-active:bg-opacity-5 dark:bg-white dark:bg-opacity-0 dark:ui-active:bg-opacity-5 transition-opacity"
+                    className={MENU_ITEM_CLASSES}
                     onClick={handleToggleDarkMode}
                   >
                     <div
@@ -114,6 +128,22 @@ export default function Dropdown() {
                       </span>
                     </div>
                     <span>Dark Mode</span>
+                  </Menu.Item>
+
+                  <Menu.Item
+                    as="div"
+                    className="border-t border-black border-opacity-10 dark:border-white dark:border-opacity-5 flex items-center justify-around py-1"
+                  >
+                    {EXTERNAL_LINKS.map(({ href, Logo }) => (
+                      <a
+                        key={href}
+                        href={href}
+                        target="_blank"
+                        className="p-2 opacity-60 hover:opacity-100 transition-opacity"
+                      >
+                        <Logo />
+                      </a>
+                    ))}
                   </Menu.Item>
                 </div>
               </Menu.Items>
