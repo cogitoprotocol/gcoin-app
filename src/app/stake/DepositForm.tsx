@@ -42,7 +42,7 @@ export default function DepositForm() {
   const userAccount = useAccount();
 
   const [inputValue, setInputValue] = useState("");
-  const [durationDays, setDurationDays] = useState(28);
+  const [durationDays, setDurationDays] = useState(1);
   const [rewardsRate, setRewardsRate] = useState<number>();
   const gcoinPrice = useGcoinPrice();
   const cgvPrice = useCgvPrice();
@@ -259,7 +259,7 @@ export default function DepositForm() {
             max={GCOIN_MAX_STAKING_DURATION_DAYS}
             value={durationDays}
             onChange={(e) => setDurationDays(Number(e.target.value))}
-            step={7}
+            step={1}
             className="mt-4 w-full h-2 rounded-lg appearance-none cursor-pointer bg-black opacity-50"
           />
           <div className="mt-2 flex justify-between opacity-50 text-sm">
