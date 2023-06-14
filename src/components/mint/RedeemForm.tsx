@@ -4,14 +4,10 @@ import {
   useAddRecentTransaction,
   useConnectModal,
 } from "@rainbow-me/rainbowkit";
-import {
-  erc20ABI,
-  readContract,
-  waitForTransaction,
-  writeContract,
-} from "@wagmi/core";
+import { readContract, waitForTransaction, writeContract } from "@wagmi/core";
 import SubmitButton, { FormState } from "components/common/SubmitButton";
 import { GCOIN_DECIMALS, USDC_DECIMALS } from "lib/constants";
+import { toBigIntWithDecimals, toBigWithDecimals } from "lib/numbers";
 import {
   gCoinABI,
   gCoinAddress,
@@ -27,25 +23,20 @@ import { BsArrowDown } from "react-icons/bs";
 import { useAccount } from "wagmi";
 import ClickableBalanceLabel from "../common/ClickableBalanceLabel";
 
-export default function TradeForm() {
+export default function RedeemForm() {
   const userAccount = useAccount();
 
   const [inputValue, setInputValue] = useState("");
   const [outputValue, setOutputValue] = useState("");
 
-  const inputAddress = usdTestAddress;
-  const outputAddress = gCoinAddress;
-  const inputSymbolResult = useErc20Symbol({
-    address: inputAddress,
+  const outputAddress = usdTestAddress;
+  const outputSymbolResult = useErc20Symbol({
+    address: outputAddress,
   });
-  const inputDecimalsResult = useErc20Decimals({
-    address: inputAddress,
+  const outputDecimalsResult = useErc20Decimals({
+    address: outputAddress,
   });
-  const inputDenominator = Math.pow(
-    10,
-    inputDecimalsResult.data ?? USDC_DECIMALS
-  );
-  const outputDenominator = Math.pow(10, GCOIN_DECIMALS);
+  const outputDecimals = outputDecimalsResult.data ?? USDC_DECIMALS;
 
   const [formState, setFormState] = useState(FormState.READY);
   useEffect(() => {
@@ -55,17 +46,22 @@ export default function TradeForm() {
   }, [userAccount.isConnected]);
 
   // User balances
-  const inputBalanceResult = useErc20BalanceOf(
+  const gcoinBalanceResult = useErc20BalanceOf(
     !!userAccount.address
       ? {
-          address: inputAddress,
+          address: gCoinAddress,
           args: [userAccount.address],
           watch: true,
         }
       : undefined
   );
   const setToMax = () =>
-    setInputValue(String(Number(inputBalanceResult.data) / inputDenominator));
+    setInputValue(
+      toBigWithDecimals(
+        gcoinBalanceResult.data ?? 0,
+        -GCOIN_DECIMALS
+      ).toString()
+    );
 
   const outputBalanceResult = useErc20BalanceOf(
     !!userAccount.address
@@ -77,43 +73,20 @@ export default function TradeForm() {
       : undefined
   );
 
-  const [needsAllowance, setNeedsAllowance] = useState(false);
-  const refetchBalances = () => {
-    inputBalanceResult.refetch();
-    outputBalanceResult.refetch();
-  };
-
-  const checkAllowance = async () => {
-    const value = BigInt(Number(inputValue) * inputDenominator);
-    if (!!userAccount.address && !!value) {
-      try {
-        const allowance = await readContract({
-          address: inputAddress,
-          abi: erc20ABI,
-          functionName: "allowance",
-          args: [userAccount.address, gCoinAddress],
-        });
-        setNeedsAllowance(allowance < value);
-      } catch (err) {
-        console.warn(`allowance`, err);
-      }
-    }
-  };
-
   const getExpectedOutput = async (value: bigint) => {
     try {
       const output = await readContract({
         address: gCoinAddress,
         abi: gCoinABI,
-        functionName: "getGCoinOutputFromStable",
-        args: [inputAddress, value],
+        functionName: "getStableOutputFromGcoin",
+        args: [outputAddress, value],
       });
-      setOutputValue(String(Number(output) / outputDenominator));
-      if (inputBalanceResult.data != null && value <= inputBalanceResult.data) {
+      setOutputValue(toBigWithDecimals(output, -outputDecimals).toString());
+      if (gcoinBalanceResult.data != null && value <= gcoinBalanceResult.data) {
         setFormState(FormState.READY);
       }
     } catch (err) {
-      console.warn(`getGCoinOutputFromStable`, err);
+      console.warn(`getStableOutputFromGcoin`, err);
     }
   };
 
@@ -136,7 +109,7 @@ export default function TradeForm() {
       return;
     }
 
-    const value = BigInt(Number(inputValue) * inputDenominator);
+    const value = toBigIntWithDecimals(inputValue, GCOIN_DECIMALS);
     if (value <= 0) {
       setFormState(FormState.DISABLED);
       return;
@@ -144,12 +117,10 @@ export default function TradeForm() {
 
     getExpectedOutput(value);
 
-    if (inputBalanceResult.data != null && value > inputBalanceResult.data) {
+    if (gcoinBalanceResult.data != null && value > gcoinBalanceResult.data) {
       setFormState(FormState.DISABLED);
       return;
     }
-
-    checkAllowance();
   };
   useEffect(validateInput, [inputValue]);
 
@@ -171,57 +142,29 @@ export default function TradeForm() {
       return;
     }
 
-    const value = BigInt(Number(inputValue) * inputDenominator);
+    const value = toBigIntWithDecimals(inputValue, GCOIN_DECIMALS);
     if (value < 0) return;
 
     setFormState(FormState.LOADING);
 
-    if (needsAllowance) {
-      // tx: approve
-      try {
-        const { hash } = await writeContract({
-          address: inputAddress,
-          abi: gCoinABI,
-          functionName: "approve",
-          args: [gCoinAddress, value],
-        });
-        addRecentTransaction({
-          hash,
-          description: `Approve ${inputSymbolResult?.data}`,
-        });
-
-        console.log(`approve`, hash);
-        const data = await waitForTransaction({
-          hash,
-        });
-        console.log(`approve`, data);
-      } catch (error) {
-        console.warn(`approve`, error);
-        setFormState(FormState.READY);
-        return;
-      }
-    }
-
-    // tx: depositStableCoin
+    // tx: withdrawStableCoin
     try {
       const { hash } = await writeContract({
         address: gCoinAddress,
         abi: gCoinABI,
-        functionName: "depositStableCoin",
-        args: [inputAddress, value],
+        functionName: "withdrawStableCoin",
+        args: [outputAddress, value],
       });
-      addRecentTransaction({ hash, description: "Mint GCOIN" });
+      addRecentTransaction({ hash, description: "Redeem GCOIN" });
 
-      console.log(`depositStableCoin`, hash);
+      console.log(`withdrawStableCoin`, hash);
       const data = await waitForTransaction({
         hash,
       });
-      console.log(`depositStableCoin`, data);
-      refetchBalances();
+      console.log(`withdrawStableCoin`, data);
     } catch (error) {
-      console.warn(`depositStableCoin`, error);
+      console.warn(`withdrawStableCoin`, error);
     }
-    checkAllowance();
     setFormState(FormState.READY);
   };
 
@@ -233,8 +176,8 @@ export default function TradeForm() {
 
           <ClickableBalanceLabel
             onClick={setToMax}
-            value={inputBalanceResult.data}
-            decimals={inputDecimalsResult.data}
+            value={gcoinBalanceResult.data}
+            decimals={GCOIN_DECIMALS}
           />
         </div>
 
@@ -249,8 +192,8 @@ export default function TradeForm() {
             autoComplete="off"
           />
 
-          <Image alt="USDC" src="/img/usdc.svg" width={24} height={24} />
-          <label className="ml-2">{inputSymbolResult?.data}</label>
+          <Image alt="GCOIN" src="/img/gcoin.svg" width={24} height={24} />
+          <label className="ml-2">GCOIN</label>
         </div>
       </div>
 
@@ -260,7 +203,10 @@ export default function TradeForm() {
         <div className="flex justify-between text-sm">
           <label className="text-gray-600 dark:text-gray-400">Balance</label>
 
-          <ClickableBalanceLabel value={outputBalanceResult.data} />
+          <ClickableBalanceLabel
+            value={outputBalanceResult.data}
+            decimals={outputDecimals}
+          />
         </div>
 
         <div className="flex text-2xl items-center">
@@ -270,12 +216,11 @@ export default function TradeForm() {
             className="bg-transparent w-full focus:outline-none"
             value={outputValue}
             onChange={(e) => setOutputValue(e.target.value)}
-            maxLength={40}
-            autoComplete="off"
+            disabled
           />
 
-          <Image alt="GCOIN" src="/img/gcoin.svg" width={24} height={24} />
-          <label className="ml-2">GCOIN</label>
+          <Image alt="USDC" src="/img/usdc.svg" width={24} height={24} />
+          <label className="ml-2">{outputSymbolResult?.data}</label>
         </div>
       </div>
 
@@ -283,10 +228,8 @@ export default function TradeForm() {
         state={formState}
         value={
           gcoinPausedResult.data
-            ? "Minting Paused"
-            : needsAllowance
-            ? `Approve ${inputSymbolResult?.data}`
-            : "Swap"
+            ? "Redemptions Paused"
+            : `Redeem GCOIN for ${outputSymbolResult?.data}`
         }
         isConnected={userAccount.isConnected}
       />

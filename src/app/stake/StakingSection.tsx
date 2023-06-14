@@ -17,7 +17,7 @@ export default function StakingSection() {
             <Tab
               key={tab}
               className={classNames([
-                "flex-1 p-4 rounded-t-lg transition-all focus:outline-none",
+                "flex-1 p-4 rounded-t-lg transition-all focus:outline-none text-lg",
                 "ui-selected:font-medium ui-selected:bg-zinc-50",
                 "ui-selected:dark:bg-dark-section-light",
                 "ui-not-selected:hover:bg-opacity-20 ui-not-selected:text-gray-500 ui-not-selected:font-thin ui-not-selected:hover:drop-shadow-lg",
