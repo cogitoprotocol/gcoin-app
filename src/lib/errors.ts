@@ -4,4 +4,5 @@ export const getRevertError = (error: unknown) => {
   if (reason) {
     return reason[1];
   }
+  return "";
 };

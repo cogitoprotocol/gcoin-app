@@ -2,16 +2,12 @@
 
 import { CGV_DECIMALS } from "lib/constants";
 import { formatNumber } from "lib/numbers";
-import {
-  cgvAddress,
-  gCoinStakingAddress,
-  useErc20BalanceOf,
-} from "lib/wagmiHooks";
+import { cgvAddress, treasuryAddress, useErc20BalanceOf } from "lib/wagmiHooks";
 
 export default function TotalAllocatedRewards() {
   const balance = useErc20BalanceOf({
     address: cgvAddress,
-    args: [gCoinStakingAddress],
+    args: [treasuryAddress],
   });
 
   if (balance.data == null) {

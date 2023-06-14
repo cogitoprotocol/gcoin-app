@@ -29,7 +29,7 @@ export default function StakingSection() {
           ))}
         </Tab.List>
 
-        <Tab.Panels className="p-8 pt-4">
+        <Tab.Panels className="p-4 sm:p-8">
           <Tab.Panel className="flex flex-col gap-4">
             <p className="text-sm">
               Stake your GCOIN for a fixed duration to earn CGV rewards. The
