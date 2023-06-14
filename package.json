@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "wagmi": "cp \"${GCOIN_DIR:-../gcoin}\"/deploy/*.json lib/contracts && wagmi generate",
+    "wagmi": "cp \"${GCOIN_DIR:-../gcoin}\"/deploy/*.json src/lib/contracts && wagmi generate",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

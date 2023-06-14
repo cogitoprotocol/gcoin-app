@@ -7,10 +7,10 @@ dotenv.config({ path: `.env.local`, override: true });
 
 let deployments;
 if (process.env.NEXT_PUBLIC_NETWORK === "sepolia") {
-  deployments = require("./lib/contracts/sepolia.json");
+  deployments = require("./src/lib/contracts/sepolia.json");
 } else {
   try {
-    deployments = require("./lib/contracts/localhost.json");
+    deployments = require("./src/lib/contracts/localhost.json");
   } catch (error) {
     console.error("Localhost contracts not found!");
     process.exit(1);
@@ -20,7 +20,7 @@ if (process.env.NEXT_PUBLIC_NETWORK === "sepolia") {
 console.log(`Using ${process.env.NEXT_PUBLIC_NETWORK} contracts`, deployments);
 
 export default defineConfig({
-  out: "lib/wagmiHooks.ts",
+  out: "src/lib/wagmiHooks.ts",
   contracts: [],
   plugins: [
     foundry({
