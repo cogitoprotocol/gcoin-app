@@ -7,11 +7,12 @@ import {
 import { readContract, waitForTransaction, writeContract } from "@wagmi/core";
 import ClickableBalanceLabel from "components/common/ClickableBalanceLabel";
 import ClientOnly from "components/common/ClientOnly";
-import SubmitButton from "components/common/SubmitButton";
+import SubmitButton, { FormState } from "components/common/SubmitButton";
 import {
   GCOIN_DECIMALS,
   GCOIN_MAX_STAKING_DURATION_DAYS,
   GCOIN_MIN_STAKING_DURATION_DAYS,
+  GCOIN_REWARD_SCALE,
   SECONDS_IN_DAY,
 } from "lib/constants";
 import { getRevertError } from "lib/errors";
@@ -22,6 +23,7 @@ import {
   gCoinStakingABI,
   gCoinStakingAddress,
   useGCoinBalanceOf,
+  useGCoinStakingAnnualRewardRate,
   useGCoinStakingPaused,
 } from "lib/wagmiHooks";
 import { DateTime } from "luxon";
@@ -30,13 +32,7 @@ import { FormEventHandler, useEffect, useState } from "react";
 import { Address, erc20ABI, useAccount } from "wagmi";
 import DepositFormSkeleton from "./DepositFormSkeleton";
 
-enum FormState {
-  READY,
-  LOADING,
-  DISABLED,
-}
-
-const daysToSeconds = (d: number) => BigInt(d * SECONDS_IN_DAY);
+const daysToSeconds = (d: number) => d * SECONDS_IN_DAY;
 
 export default function DepositForm() {
   const userAccount = useAccount();
@@ -105,8 +101,6 @@ export default function DepositForm() {
     }
 
     const value = toBigIntWithDecimals(inputValue, GCOIN_DECIMALS);
-    console.log(`value`, value);
-    console.log(`gcoinBalanceResult.data`, gcoinBalanceResult.data);
     if (
       value <= 0 ||
       (gcoinBalanceResult.data != null && value > gcoinBalanceResult.data)
@@ -119,16 +113,23 @@ export default function DepositForm() {
     setFormState(FormState.READY);
   };
   useEffect(validateInput, [inputValue]);
+
+  // Rate
+  const annualRewardRateResult = useGCoinStakingAnnualRewardRate();
   useEffect(() => {
-    (async () => {
-      const rate = await readContract({
-        address: gCoinStakingAddress,
-        abi: gCoinStakingABI,
-        functionName: "calculateRewardRate",
-        args: [daysToSeconds(durationDays)],
-      });
-      setRewardsRate((Number(rate) / gcoinPrice) * cgvPrice);
-    })();
+    if (annualRewardRateResult.data == null) {
+      return;
+    }
+
+    const r = Number(annualRewardRateResult.data);
+    const rate =
+      r +
+      Math.floor(
+        (r * (GCOIN_REWARD_SCALE * daysToSeconds(durationDays))) /
+          (365 * SECONDS_IN_DAY)
+      );
+    const apy = (rate / gcoinPrice) * cgvPrice;
+    setRewardsRate(apy);
   }, [durationDays, gcoinPrice, cgvPrice]);
 
   // Form submission
@@ -185,7 +186,7 @@ export default function DepositForm() {
         address: gCoinStakingAddress,
         abi: gCoinStakingABI,
         functionName: "stake",
-        args: [value, daysToSeconds(durationDays)],
+        args: [value, BigInt(daysToSeconds(durationDays))],
       });
       addRecentTransaction({ hash, description: "Stake GCOIN" });
 
@@ -197,7 +198,7 @@ export default function DepositForm() {
     } catch (error) {
       console.warn(`stake`, error);
       const reason = getRevertError(error);
-      setError(reason ? reason : "Error");
+      setError(reason);
     }
     setFormState(FormState.READY);
   };

@@ -26,10 +26,14 @@ export default function DepositFormSkeleton() {
         </div>
       </div>
 
-      <div className="w-full flex flex-col gap-4">
-        <div className="flex justify-between text-xl">
-          <label>Stake for</label>
-          <TextSkeleton className="w-24" />
+      <div className="w-full flex flex-col">
+        <div>
+          <span className="font-light">Stake until </span>
+          <TextSkeleton className="w-32 h-3" />
+        </div>
+        <div className="">
+          <span className="font-light">Expected APY: </span>
+          <TextSkeleton className="w-24 h-3" />
         </div>
         <input
           type="range"
@@ -37,9 +41,9 @@ export default function DepositFormSkeleton() {
           max={GCOIN_MAX_STAKING_DURATION_DAYS}
           defaultValue={GCOIN_MIN_STAKING_DURATION_DAYS}
           step={7}
-          className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-black opacity-50"
+          className="mt-4 w-full h-2 rounded-lg appearance-none cursor-pointer bg-black opacity-50"
         />
-        <div className="-mt-2 flex justify-between opacity-50 text-sm">
+        <div className="mt-2 flex justify-between opacity-50 text-sm">
           <div className="cursor-pointer hover:underline">
             {GCOIN_MIN_STAKING_DURATION_DAYS}{" "}
             {pluralize("day", GCOIN_MIN_STAKING_DURATION_DAYS)}
