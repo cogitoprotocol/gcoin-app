@@ -16,8 +16,8 @@ import {
   SECONDS_IN_DAY,
 } from "lib/constants";
 import { getRevertError } from "lib/errors";
+import { useCgvPrice, useGcoinPrice } from "lib/hooks/prices";
 import { formatNumber, pluralize, toBigIntWithDecimals } from "lib/numbers";
-import { useCgvPrice, useGcoinPrice } from "lib/prices";
 import {
   gCoinAddress,
   gCoinStakingABI,

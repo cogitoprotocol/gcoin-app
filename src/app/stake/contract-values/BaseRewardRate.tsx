@@ -1,7 +1,7 @@
 "use client";
 
+import { useCgvPrice, useGcoinPrice } from "lib/hooks/prices";
 import { formatNumber } from "lib/numbers";
-import { useCgvPrice, useGcoinPrice } from "lib/prices";
 import { useGCoinStakingAnnualRewardRate } from "lib/wagmiHooks";
 
 export default function BaseRewardRate() {
