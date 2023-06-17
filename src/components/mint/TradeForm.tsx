@@ -10,8 +10,12 @@ import {
   waitForTransaction,
   writeContract,
 } from "@wagmi/core";
+import Alert from "components/common/Alert";
+import BalanceInput from "components/common/BalanceInput";
 import SubmitButton, { FormState } from "components/common/SubmitButton";
 import { GCOIN_DECIMALS, USDC_DECIMALS } from "lib/constants";
+import { getRevertError } from "lib/errors";
+import { toBigIntWithDecimals, toBigWithDecimals } from "lib/numbers";
 import {
   gCoinABI,
   gCoinAddress,
@@ -21,11 +25,9 @@ import {
   useErc20Symbol,
   useGCoinPaused,
 } from "lib/wagmiHooks";
-import Image from "next/image";
 import { FormEventHandler, useEffect, useState } from "react";
 import { BsArrowDown } from "react-icons/bs";
 import { useAccount } from "wagmi";
-import ClickableBalanceLabel from "../common/ClickableBalanceLabel";
 
 export default function TradeForm() {
   const userAccount = useAccount();
@@ -41,11 +43,7 @@ export default function TradeForm() {
   const inputDecimalsResult = useErc20Decimals({
     address: inputAddress,
   });
-  const inputDenominator = Math.pow(
-    10,
-    inputDecimalsResult.data ?? USDC_DECIMALS
-  );
-  const outputDenominator = Math.pow(10, GCOIN_DECIMALS);
+  const inputDecimals = inputDecimalsResult.data ?? USDC_DECIMALS;
 
   const [formState, setFormState] = useState(FormState.READY);
   useEffect(() => {
@@ -65,7 +63,9 @@ export default function TradeForm() {
       : undefined
   );
   const setToMax = () =>
-    setInputValue(String(Number(inputBalanceResult.data) / inputDenominator));
+    setInputValue(
+      toBigWithDecimals(inputBalanceResult.data ?? 0, -inputDecimals).toString()
+    );
 
   const outputBalanceResult = useErc20BalanceOf(
     !!userAccount.address
@@ -78,13 +78,9 @@ export default function TradeForm() {
   );
 
   const [needsAllowance, setNeedsAllowance] = useState(false);
-  const refetchBalances = () => {
-    inputBalanceResult.refetch();
-    outputBalanceResult.refetch();
-  };
 
   const checkAllowance = async () => {
-    const value = BigInt(Number(inputValue) * inputDenominator);
+    const value = toBigIntWithDecimals(inputValue, inputDecimals);
     if (!!userAccount.address && !!value) {
       try {
         const allowance = await readContract({
@@ -108,7 +104,7 @@ export default function TradeForm() {
         functionName: "getGCoinOutputFromStable",
         args: [inputAddress, value],
       });
-      setOutputValue(String(Number(output) / outputDenominator));
+      setOutputValue(toBigWithDecimals(output, -GCOIN_DECIMALS).toString());
       if (inputBalanceResult.data != null && value <= inputBalanceResult.data) {
         setFormState(FormState.READY);
       }
@@ -136,7 +132,7 @@ export default function TradeForm() {
       return;
     }
 
-    const value = BigInt(Number(inputValue) * inputDenominator);
+    const value = toBigIntWithDecimals(inputValue, inputDecimals);
     if (value <= 0) {
       setFormState(FormState.DISABLED);
       return;
@@ -154,6 +150,7 @@ export default function TradeForm() {
   useEffect(validateInput, [inputValue]);
 
   // Form submission
+  const [error, setError] = useState("");
   const { openConnectModal } = useConnectModal();
   const addRecentTransaction = useAddRecentTransaction();
   const onSubmit: FormEventHandler = async (e) => {
@@ -171,7 +168,7 @@ export default function TradeForm() {
       return;
     }
 
-    const value = BigInt(Number(inputValue) * inputDenominator);
+    const value = toBigIntWithDecimals(inputValue, inputDecimals);
     if (value < 0) return;
 
     setFormState(FormState.LOADING);
@@ -198,6 +195,7 @@ export default function TradeForm() {
       } catch (error) {
         console.warn(`approve`, error);
         setFormState(FormState.READY);
+        setError(getRevertError(error));
         return;
       }
     }
@@ -217,9 +215,9 @@ export default function TradeForm() {
         hash,
       });
       console.log(`depositStableCoin`, data);
-      refetchBalances();
     } catch (error) {
       console.warn(`depositStableCoin`, error);
+      setError(getRevertError(error));
     }
     checkAllowance();
     setFormState(FormState.READY);
@@ -227,57 +225,25 @@ export default function TradeForm() {
 
   return (
     <form className="flex flex-col items-center gap-4" onSubmit={onSubmit}>
-      <div className="rounded-md bg-black bg-opacity-10 dark:bg-opacity-50 p-4 flex flex-col gap-2 focus-within:outline-accent focus-within:outline focus-within:outline-2">
-        <div className="flex justify-between text-sm">
-          <label className="text-gray-600 dark:text-gray-400">Balance</label>
-
-          <ClickableBalanceLabel
-            onClick={setToMax}
-            value={inputBalanceResult.data}
-            decimals={inputDecimalsResult.data}
-          />
-        </div>
-
-        <div className="flex text-2xl">
-          <input
-            type="number"
-            placeholder="0"
-            className="bg-transparent w-full focus:outline-none"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            maxLength={40}
-            autoComplete="off"
-          />
-
-          <Image alt="USDC" src="/img/usdc.svg" width={24} height={24} />
-          <label className="ml-2">{inputSymbolResult?.data}</label>
-        </div>
-      </div>
+      <BalanceInput
+        onClickBalance={setToMax}
+        balance={inputBalanceResult.data}
+        decimals={inputDecimalsResult.data}
+        value={inputValue}
+        onChange={setInputValue}
+        logo="/img/usdc.svg"
+        symbol={inputSymbolResult?.data}
+      />
 
       <BsArrowDown />
 
-      <div className="rounded-md bg-black bg-opacity-10 dark:bg-opacity-50 p-4 flex flex-col gap-2 focus-within:outline-accent focus-within:outline focus-within:outline-2">
-        <div className="flex justify-between text-sm">
-          <label className="text-gray-600 dark:text-gray-400">Balance</label>
-
-          <ClickableBalanceLabel value={outputBalanceResult.data} />
-        </div>
-
-        <div className="flex text-2xl items-center">
-          <input
-            type="number"
-            placeholder="0"
-            className="bg-transparent w-full focus:outline-none"
-            value={outputValue}
-            onChange={(e) => setOutputValue(e.target.value)}
-            maxLength={40}
-            autoComplete="off"
-          />
-
-          <Image alt="GCOIN" src="/img/gcoin.svg" width={24} height={24} />
-          <label className="ml-2">GCOIN</label>
-        </div>
-      </div>
+      <BalanceInput
+        balance={outputBalanceResult.data}
+        decimals={GCOIN_DECIMALS}
+        value={outputValue}
+        logo="/img/gcoin.svg"
+        symbol="GCOIN"
+      />
 
       <SubmitButton
         state={formState}
@@ -290,6 +256,8 @@ export default function TradeForm() {
         }
         isConnected={userAccount.isConnected}
       />
+
+      {!!error && <Alert title="Error">{error}</Alert>}
     </form>
   );
 }

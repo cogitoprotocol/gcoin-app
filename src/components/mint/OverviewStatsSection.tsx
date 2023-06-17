@@ -1,9 +1,9 @@
 import ClientOnly from "components/common/ClientOnly";
 import Section from "components/common/Section";
-import TextSkeleton from "components/common/TextSkeleton";
 import GCoinMarketCap from "components/contract-values/GCoinMarketCap";
 import GCoinPrice from "components/contract-values/GCoinPrice";
 import TreasuryValue from "components/contract-values/TreasuryValue";
+import TextSkeleton from "components/skeleton/TextSkeleton";
 
 const skeleton = <TextSkeleton className="w-20 h-4" />;
 

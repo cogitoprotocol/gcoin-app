@@ -5,7 +5,8 @@ import {
   useConnectModal,
 } from "@rainbow-me/rainbowkit";
 import { readContract, waitForTransaction, writeContract } from "@wagmi/core";
-import ClickableBalanceLabel from "components/common/ClickableBalanceLabel";
+import Alert from "components/common/Alert";
+import BalanceInput from "components/common/BalanceInput";
 import ClientOnly from "components/common/ClientOnly";
 import SubmitButton, { FormState } from "components/common/SubmitButton";
 import {
@@ -17,7 +18,12 @@ import {
 } from "lib/constants";
 import { getRevertError } from "lib/errors";
 import { useCgvPrice, useGcoinPrice } from "lib/hooks/prices";
-import { formatNumber, pluralize, toBigIntWithDecimals } from "lib/numbers";
+import {
+  formatNumber,
+  pluralize,
+  toBigIntWithDecimals,
+  toBigWithDecimals,
+} from "lib/numbers";
 import {
   gCoinAddress,
   gCoinStakingABI,
@@ -27,7 +33,6 @@ import {
   useGCoinStakingPaused,
 } from "lib/wagmiHooks";
 import { DateTime } from "luxon";
-import Image from "next/image";
 import { FormEventHandler, useEffect, useState } from "react";
 import { Address, erc20ABI, useAccount } from "wagmi";
 import DepositFormSkeleton from "./DepositFormSkeleton";
@@ -58,9 +63,10 @@ export default function DepositForm() {
   });
   const setToMax = () =>
     setInputValue(
-      gcoinBalanceResult.data == null
-        ? ""
-        : String(Number(gcoinBalanceResult.data) / Math.pow(10, GCOIN_DECIMALS))
+      toBigWithDecimals(
+        gcoinBalanceResult.data ?? 0,
+        -GCOIN_DECIMALS
+      ).toString()
     );
 
   // Allowance
@@ -176,6 +182,7 @@ export default function DepositForm() {
       } catch (error) {
         console.warn(`approve`, error);
         setFormState(FormState.READY);
+        setError(getRevertError(error));
         return;
       }
     }
@@ -197,8 +204,7 @@ export default function DepositForm() {
       console.log(`stake`, data);
     } catch (error) {
       console.warn(`stake`, error);
-      const reason = getRevertError(error);
-      setError(reason);
+      setError(getRevertError(error));
     }
     setFormState(FormState.READY);
   };
@@ -211,31 +217,15 @@ export default function DepositForm() {
         className="w-full flex flex-col items-center gap-4"
         onSubmit={onSubmit}
       >
-        <div className="w-full rounded-md bg-black bg-opacity-10 dark:bg-opacity-50 p-4 flex flex-col gap-2 focus-within:outline-accent focus-within:outline focus-within:outline-2">
-          <div className="flex justify-between text-sm">
-            <label className="text-gray-600 dark:text-gray-400">Balance</label>
-
-            <ClickableBalanceLabel
-              onClick={setToMax}
-              value={gcoinBalanceResult.data}
-            />
-          </div>
-
-          <div className="flex text-2xl items-center">
-            <input
-              type="number"
-              placeholder="0"
-              className="bg-transparent w-full focus:outline-none"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              maxLength={40}
-              autoComplete="off"
-            />
-
-            <Image alt="GCOIN" src="/img/gcoin.svg" width={24} height={24} />
-            <label className="ml-2">GCOIN</label>
-          </div>
-        </div>
+        <BalanceInput
+          onClickBalance={setToMax}
+          balance={gcoinBalanceResult.data}
+          decimals={GCOIN_DECIMALS}
+          value={inputValue}
+          onChange={setInputValue}
+          logo="/img/gcoin.svg"
+          symbol="GCOIN"
+        />
 
         <div className="w-full flex flex-col">
           <div>
@@ -286,7 +276,7 @@ export default function DepositForm() {
           isConnected={userAccount.isConnected}
         />
 
-        {error}
+        {!!error && <Alert title="Error">{error}</Alert>}
       </form>
     </ClientOnly>
   );

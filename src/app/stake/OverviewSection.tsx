@@ -1,9 +1,9 @@
 import ClientOnly from "components/common/ClientOnly";
 import Section from "components/common/Section";
-import TextSkeleton from "components/common/TextSkeleton";
 import BaseRewardRate from "components/contract-values/BaseRewardRate";
 import TotalPendingRewards from "components/contract-values/TotalPendingRewards";
 import TotalStaked from "components/contract-values/TotalStaked";
+import TextSkeleton from "components/skeleton/TextSkeleton";
 import UserStake from "./UserStake";
 
 export default function OverviewSection() {

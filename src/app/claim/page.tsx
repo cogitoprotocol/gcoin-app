@@ -1,10 +1,8 @@
 import AddAssetButton from "components/common/AddAssetButton";
-import ClientOnly from "components/common/ClientOnly";
 import Section from "components/common/Section";
 import { USDC_DECIMALS } from "lib/constants";
 import { usdTestAddress } from "lib/wagmiHooks";
 import ClaimForm from "./ClaimForm";
-import ClaimFormSkeleton from "./ClaimFormSkeleton";
 
 export default function ClaimPage() {
   return (
@@ -16,9 +14,7 @@ export default function ClaimPage() {
           You can claim some Testnet USD for minting GCOIN.
         </p>
 
-        <ClientOnly fallback={<ClaimFormSkeleton />}>
-          <ClaimForm />
-        </ClientOnly>
+        <ClaimForm />
 
         <div className="text-sm text-gray-600 dark:text-gray-300">
           <AddAssetButton

@@ -18,6 +18,7 @@ export default function ClickableBalanceLabel({
 
   return value != null ? (
     <span className="inline-flex gap-2">
+      <span className="text-gray-600 dark:text-gray-400">Balance</span>
       <a
         className={classNames({
           "cursor-pointer hover:underline": onClick != null,
