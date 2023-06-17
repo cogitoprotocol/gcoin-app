@@ -1,8 +1,8 @@
 "use client";
 
 import { Tab } from "@headlessui/react";
-import classNames from "classnames";
 import Section from "components/common/Section";
+import SectionTab from "components/common/SectionTab";
 import DepositForm from "./DepositForm";
 import MyStakingForm from "./MyStakingForm";
 
@@ -13,19 +13,8 @@ export default function StakingSection() {
     <Section className="w-full max-w-md flex flex-col mb-8">
       <Tab.Group>
         <Tab.List className="w-full bg-black bg-opacity-10 dark:bg-opacity-30 rounded-t-lg flex">
-          {TABS.map((tab, i) => (
-            <Tab
-              key={tab}
-              className={classNames([
-                "flex-1 p-4 rounded-t-lg transition-all focus:outline-none text-lg",
-                "ui-selected:font-medium ui-selected:bg-zinc-50",
-                "ui-selected:dark:bg-dark-section-light",
-                "ui-not-selected:hover:bg-opacity-20 ui-not-selected:text-gray-500 ui-not-selected:font-thin ui-not-selected:hover:drop-shadow-lg",
-                "ui-not-selected:dark:text-gray-400",
-              ])}
-            >
-              {tab}
-            </Tab>
+          {TABS.map((tab) => (
+            <SectionTab key={tab}>{tab}</SectionTab>
           ))}
         </Tab.List>
 
