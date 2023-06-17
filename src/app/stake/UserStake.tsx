@@ -1,11 +1,11 @@
 "use client";
 
 import ClientOnly from "components/common/ClientOnly";
+import UserCgvBalance from "components/contract-values/UserCgvBalance";
 import { CGV_DECIMALS, GCOIN_DECIMALS } from "lib/constants";
 import { formatNumber } from "lib/numbers";
 import { useGCoinStakingGetUserStakingInfo } from "lib/wagmiHooks";
 import { Address, useAccount } from "wagmi";
-import UserCgvBalance from "./UserCgvBalance";
 
 export default function UserStake() {
   const userAccount = useAccount();

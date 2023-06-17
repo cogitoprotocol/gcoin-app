@@ -1,6 +1,8 @@
+import AddAssetButton from "components/common/AddAssetButton";
 import ClientOnly from "components/common/ClientOnly";
 import Section from "components/common/Section";
-import AddAssetButton from "./AddAssetButton";
+import { USDC_DECIMALS } from "lib/constants";
+import { usdTestAddress } from "lib/wagmiHooks";
 import ClaimForm from "./ClaimForm";
 import ClaimFormSkeleton from "./ClaimFormSkeleton";
 
@@ -19,7 +21,11 @@ export default function ClaimPage() {
         </ClientOnly>
 
         <div className="text-sm text-gray-600 dark:text-gray-300">
-          <AddAssetButton />
+          <AddAssetButton
+            address={usdTestAddress}
+            symbol="USDTest"
+            decimals={USDC_DECIMALS}
+          />
         </div>
       </Section>
     </>

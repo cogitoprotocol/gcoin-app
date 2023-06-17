@@ -2,12 +2,18 @@
 
 import { getWalletClient } from "@wagmi/core";
 import ClientOnly from "components/common/ClientOnly";
-import { USDC_DECIMALS } from "lib/constants";
-import { usdTestAddress } from "lib/wagmiHooks";
 import { BsWallet2 } from "react-icons/bs";
 import { useAccount } from "wagmi";
 
-export default function AddAssetButton() {
+export default function AddAssetButton({
+  address,
+  symbol,
+  decimals,
+}: {
+  address: string;
+  symbol: string;
+  decimals: number;
+}) {
   const userAccount = useAccount();
   if (!userAccount.isConnected) {
     return null;
@@ -19,9 +25,9 @@ export default function AddAssetButton() {
     walletClient?.watchAsset({
       type: "ERC20",
       options: {
-        address: usdTestAddress,
-        symbol: "USDTest",
-        decimals: USDC_DECIMALS,
+        address,
+        symbol,
+        decimals,
       },
     });
   };
@@ -33,7 +39,7 @@ export default function AddAssetButton() {
         onClick={handleAddAsset}
       >
         <BsWallet2 />
-        Add USDTest to Wallet
+        Add {symbol} to Wallet
       </div>
     </ClientOnly>
   );

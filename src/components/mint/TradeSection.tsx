@@ -5,11 +5,13 @@ import classNames from "classnames";
 import ClientOnly from "components/common/ClientOnly";
 import Section from "components/common/Section";
 import TextSkeleton from "components/common/TextSkeleton";
-import AddAssetButton from "./AddAssetButton";
+import { GCOIN_DECIMALS } from "lib/constants";
+import { gCoinAddress } from "lib/wagmiHooks";
+import AddAssetButton from "../common/AddAssetButton";
+import MintingFee from "../contract-values/MintingFee";
+import RedemptionFee from "../contract-values/RedemptionFee";
 import GCoinPriceRate from "./GCoinPriceRate";
-import MintingFee from "./MintingFee";
 import RedeemForm from "./RedeemForm";
-import RedemptionFee from "./RedemptionFee";
 import TradeForm from "./TradeForm";
 import TradeFormSkeleton from "./TradeFormSkeleton";
 
@@ -59,7 +61,13 @@ export default function TradeSection() {
                   </ClientOnly>
                 </div>
               </div>
-              <AddAssetButton />
+              <div className="text-right">
+                <AddAssetButton
+                  address={gCoinAddress}
+                  symbol="GCOIN"
+                  decimals={GCOIN_DECIMALS}
+                />
+              </div>
             </div>
           </Tab.Panel>
 
