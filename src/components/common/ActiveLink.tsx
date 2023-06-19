@@ -17,7 +17,7 @@ export default function ActiveLink({
   activeClassName?: string;
 }) {
   const pathname = usePathname();
-  const isActive = pathname.startsWith(href);
+  const isActive = pathname === href;
 
   return (
     <Link

@@ -64,7 +64,7 @@ export default function Dropdown() {
                 <div className="py-1">
                   <div className="md:hidden">
                     {NAV_LINKS.map(({ label, href, Logo }) => {
-                      const isActive = pathname.startsWith(href);
+                      const isActive = pathname === href;
                       return (
                         <Menu.Item key={href}>
                           <Link
