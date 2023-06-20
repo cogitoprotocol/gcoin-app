@@ -11,6 +11,20 @@ const rubik = Rubik({ subsets: ["latin"] });
 export const metadata = {
   title: "Cogito Protocol",
   description: "App for interacting with the Cogito Protocol",
+  icons: {
+    other: [
+      {
+        rel: "icon",
+        url: "/img/icon-light.svg",
+        media: "(prefers-color-scheme: light)",
+      },
+      {
+        rel: "icon",
+        url: "/img/icon-dark.svg",
+        media: "(prefers-color-scheme: dark)",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
