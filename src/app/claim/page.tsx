@@ -2,6 +2,7 @@ import AddAssetButton from "components/common/AddAssetButton";
 import Section from "components/common/Section";
 import { USDC_DECIMALS } from "lib/constants";
 import { usdTestAddress } from "lib/wagmiHooks";
+import Link from "next/link";
 import ClaimForm from "./ClaimForm";
 
 export default function ClaimPage() {
@@ -11,7 +12,17 @@ export default function ClaimPage() {
         <h1 className="text-3xl">Testnet USD</h1>
 
         <p className="text-sm">
-          You can claim some Testnet USD for minting GCOIN.
+          To claim Testnet USD, which is required to mint GCOIN, you need to
+          have Sepolia ETH to pay the transaction fee. Head over to{" "}
+          <Link
+            target="_blank"
+            href="https://sepolia-faucet.pk910.de/"
+            className="text-accent hover:text-accent-active"
+          >
+            this faucet
+          </Link>{" "}
+          to mine Sepolia ETH. Remember to change your network to Sepolia
+          Testnet.
         </p>
 
         <ClaimForm />
